@@ -1,0 +1,1451 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Abrigo de ônibus completo com energia solar, LED, carregador de celular e acessibilidade. Delta Comunicação Visual.">
+<meta property="og:title" content="Abrigo de Ônibus Delta">
+<meta property="og:description" content="Veja em 3D como o abrigo é feito, peça por peça. Delta Comunicação Visual · (54) 99257-4831">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://delta1034-dev.github.io/abrigo-delta/">
+<meta property="og:image" content="https://delta1034-dev.github.io/abrigo-delta/previa.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%237a1f35'/%3E%3Cpath d='M14 22h36v6H14zM18 28h4v24h-4zM42 28h4v24h-4zM24 40h16v3H24z' fill='%23fff'/%3E%3C/svg%3E">
+
+<meta name="theme-color" content="#0a0d14">
+<style>html,body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Abrigo de Ônibus Delta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: palco 3D fixo durante a montagem (texto rola por cima), depois seções de prova, medidas, compra e contato.
+   Visual único: céu do entardecer, asfalto, aço preto e o bordô do ACM. */
+:root{
+  --noite:#0a0d14;
+  --chapa:#121722;
+  --chapa-2:#19202e;
+  --linha:#273043;
+  --texto:#eef1f6;
+  --suave:#b9c1cf;
+  --aco:#8e98aa;
+  --bordo:#7a1f35;
+  --bordo-vivo:#e0607f;
+  --led:#ffe9c4;
+  --verde:#38c27a;
+  --f-display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-corpo:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-dado:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--noite)}
+body{background:var(--noite);color:var(--texto);font-family:var(--f-corpo);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:var(--f-display);font-weight:800;line-height:.98;margin:0;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--led);outline-offset:3px}
+
+/* ---------- palco ---------- */
+#historia{position:relative}
+#palco{position:sticky;top:0;height:100vh;height:100svh;width:100%;overflow:hidden;background:var(--noite)}
+.ceu{position:absolute;inset:0;pointer-events:none}
+.ceu.dia{background:linear-gradient(180deg,#b9cad9 0%,#dfe6ec 46%,#e9ebe8 70%,#d9d6cf 100%)}
+.ceu.noite{background:linear-gradient(180deg,#05070d 0%,#0e1526 45%,#1b2338 68%,#141823 100%);opacity:0}
+#cena{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
+#palco .vinheta{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(10,13,20,.62) 0%,rgba(10,13,20,0) 22%,rgba(10,13,20,0) 66%,rgba(10,13,20,.55) 100%)}
+#rotulos{position:absolute;inset:0;pointer-events:none;z-index:2}
+#rotulos svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.rotulo{position:absolute;left:0;top:0;transform:translate(-9999px,0);background:rgba(10,13,20,.86);border:1px solid rgba(255,255,255,.14);border-radius:7px;padding:5px 9px 6px;white-space:nowrap;line-height:1.15;opacity:0;transition:opacity .25s}
+.rotulo b{display:block;font:700 14px var(--f-corpo);color:#fff}
+.rotulo span{display:block;font:500 11px var(--f-dado);color:var(--led);margin-top:2px}
+.ponto{fill:var(--led);stroke:rgba(10,13,20,.8);stroke-width:2}
+.fio{stroke:rgba(255,233,196,.85);stroke-width:1.2;fill:none}
+
+.topo{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);left:16px;right:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;z-index:4;pointer-events:none}
+.marca{font-family:var(--f-display);font-weight:700;font-size:15px;letter-spacing:.14em;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.marca span{color:var(--bordo-vivo)}
+.fase{font-family:var(--f-dado);font-size:11px;letter-spacing:.08em;color:#d7dce6;text-transform:uppercase;background:rgba(10,13,20,.55);padding:4px 8px;border-radius:5px}
+.barra{position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);height:2px;background:rgba(255,255,255,.12);z-index:4;border-radius:2px;overflow:hidden}
+.barra i{display:block;height:100%;width:0;background:var(--led)}
+.indice{position:absolute;right:18px;top:50%;transform:translateY(-50%);z-index:4;display:none;flex-direction:column;gap:2px;pointer-events:auto}
+.indice button{display:flex;align-items:center;justify-content:flex-end;gap:10px;background:none;border:0;padding:5px 0;cursor:pointer;color:#c6ccd8;font:500 12.5px var(--f-corpo);text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.indice button i{width:8px;height:8px;border-radius:50%;border:1.5px solid currentColor;flex:none}
+.indice button span{opacity:0;transition:opacity .2s}
+.indice:hover button span,.indice button.atual span{opacity:1}
+.indice button.atual{color:#fff}
+.indice button.atual i{background:var(--led);border-color:var(--led)}
+@media (min-width:1000px){.indice{display:flex}}
+
+#passos{position:relative;margin-top:-100vh;margin-top:-100svh;z-index:3;pointer-events:none}
+.passo{height:100vh;height:100svh;display:flex;align-items:flex-end;padding:0 16px calc(env(safe-area-inset-bottom,0px) + 30px)}
+.cartao{pointer-events:auto;width:100%;max-width:470px;background:rgba(12,16,24,.84);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:18px 20px 18px;display:grid;gap:9px}
+.etiqueta{font-family:var(--f-dado);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--bordo-vivo)}
+.cartao h2{font-size:clamp(28px,6.6vw,40px)}
+.cartao p{color:#cdd3de;font-size:15.5px;line-height:1.5}
+.dados{list-style:none;margin:2px 0 0;padding:10px 0 0;border-top:1px solid rgba(255,255,255,.1);display:grid;gap:4px}
+.dados li{display:flex;justify-content:space-between;gap:14px;font-size:13.5px;color:var(--suave)}
+.dados li b{font:500 12.5px var(--f-dado);color:var(--led);text-align:right}
+@media (max-width:600px){.dados{display:none}.cartao{padding:15px 16px}.cartao p{font-size:14.8px;line-height:1.45}.cartao h2{font-size:27px}.marca{font-size:12.5px;letter-spacing:.1em}}
+.abertura .cartao{background:none;border:0;backdrop-filter:none;-webkit-backdrop-filter:none;padding:0;max-width:560px;gap:14px}
+.abertura .etiqueta{color:#ffd6df}
+.abertura h1{font-size:clamp(44px,10.5vw,80px);text-shadow:0 2px 30px rgba(0,0,0,.65)}
+.abertura h1 em{font-style:normal;color:var(--led)}
+.abertura p{font-size:17.5px;color:#e6eaf1;text-shadow:0 1px 12px rgba(0,0,0,.9)}
+.rolar{font-family:var(--f-dado);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#cfd5df;display:flex;align-items:center;gap:8px}
+.rolar::after{content:"";width:1px;height:26px;background:linear-gradient(var(--led),transparent);animation:pinga 1.8s ease-in-out infinite}
+@keyframes pinga{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.cidade{display:flex;gap:8px}
+/* personalização: nome e cores da cartela de ACM */
+.personalizar{display:grid;gap:10px}
+.cores{display:grid;gap:8px}
+.abas{display:flex;gap:4px;background:rgba(255,255,255,.07);padding:3px;border-radius:9px}
+.abas button{flex:1;border:0;background:none;color:#cfd5df;font:600 13.5px var(--f-corpo);padding:7px 8px;border-radius:7px;cursor:pointer}
+.abas button[aria-selected="true"]{background:#fff;color:#14161b}
+.filtros{display:flex;gap:6px;flex-wrap:wrap}
+.filtros button{border:1px solid rgba(255,255,255,.18);background:none;color:#cfd5df;font:500 12px var(--f-dado);letter-spacing:.04em;padding:4px 10px;border-radius:999px;cursor:pointer}
+.filtros button[aria-pressed="true"]{background:var(--led);border-color:var(--led);color:#2a1a06}
+.amostras{display:flex;flex-wrap:wrap;gap:7px}
+.amostra{width:30px;height:30px;border-radius:50%;border:0;padding:0;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),0 1px 3px rgba(0,0,0,.4);flex:none}
+.amostra[aria-checked="true"]{outline:2px solid var(--led);outline-offset:2px}
+.escolha{display:flex;align-items:center;gap:8px;font-size:13.5px;color:#e6eaf1;min-height:20px}
+.escolha i{width:14px;height:14px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
+.escolha b{font:500 12px var(--f-dado);color:var(--led);margin-left:auto;white-space:nowrap}
+.aviso-cor{font-size:11.5px;color:#8e98aa;line-height:1.35}
+.so-cel{display:none}
+@media (max-width:600px){.passo .personalizar{display:none}.so-cel{display:inline-flex}}
+#painelExplorar{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 128px);z-index:6;width:min(440px,calc(100% - 32px));background:rgba(12,16,24,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px}
+@media (min-width:700px){#painelExplorar{bottom:calc(env(safe-area-inset-bottom,0px) + 80px)}}
+.cidade input{flex:1;min-width:0;font:600 16px var(--f-corpo);background:#0a0d14;color:var(--texto);border:1px solid var(--linha);border-radius:8px;padding:10px 12px}
+.cidade input::placeholder{color:#6d7687}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:600 15.5px var(--f-corpo);border-radius:10px;padding:12px 18px;border:0;cursor:pointer;text-decoration:none}
+.btn.claro{background:var(--led);color:#2a1a06}
+.btn.vidro{background:rgba(255,255,255,.12);color:#fff}
+@media (min-width:900px){
+  .passo{align-items:center;padding-left:5vw;padding-bottom:0}
+  .passo.abertura{align-items:flex-end;padding-bottom:11vh}
+  .passo.dir{justify-content:flex-end;padding-right:calc(5vw + 150px)}
+}
+
+/* modo explorar */
+.explorar-ui{position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 22px);z-index:5;display:none;justify-content:center;gap:8px;flex-wrap:wrap}
+.explorar-ui button{background:rgba(12,16,24,.86);border:1px solid rgba(255,255,255,.16);color:#fff;border-radius:999px;padding:10px 16px;font:600 14.5px var(--f-corpo);cursor:pointer}
+.explorar-ui button[aria-pressed="true"]{background:var(--led);color:#2a1a06;border-color:var(--led)}
+.explorar-ui .sair{background:var(--bordo);border-color:var(--bordo)}
+.dica{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + 56px);transform:translateX(-50%);z-index:5;display:none;font:500 13px var(--f-corpo);color:#e8ecf2;background:rgba(12,16,24,.7);padding:6px 12px;border-radius:999px;white-space:nowrap}
+#palco.explorando{position:fixed;inset:0;height:100%;z-index:60}
+#palco.explorando .explorar-ui,#palco.explorando .dica{display:flex}
+#palco.explorando .indice,#palco.explorando .barra{display:none}
+#palco.explorando #cena{touch-action:none}
+
+/* ---------- seções ---------- */
+.secao{padding-block:84px;padding-inline:16px;position:relative;z-index:2;background:var(--noite)}
+.secao.alt{background:#0d111a}
+.miolo{max-width:1100px;margin:0 auto;display:grid;gap:26px}
+.sobre{font-family:var(--f-dado);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--bordo-vivo)}
+.secao h2{font-size:clamp(34px,6.5vw,60px)}
+.lead{color:#c9cfda;font-size:18px;max-width:40em}
+
+.desenhos{display:grid;gap:18px;grid-template-columns:1fr}
+@media (min-width:900px){.desenhos{grid-template-columns:1.85fr 1fr}}
+.prancha{background:#f3f1ec;color:#1d222b;border-radius:12px;padding:14px 14px 10px;display:grid;gap:6px;min-width:0}
+.prancha h3{font:700 13px var(--f-dado);letter-spacing:.08em;text-transform:uppercase;color:#59606c}
+.prancha svg{width:100%;height:auto;display:block}
+.notas{display:grid;gap:10px;grid-template-columns:1fr;color:#c9cfda}
+@media (min-width:700px){.notas{grid-template-columns:repeat(3,1fr)}}
+.nota{border-left:2px solid var(--bordo);padding:2px 0 2px 14px}
+.nota b{display:block;font:800 30px var(--f-display);color:#fff;line-height:1}
+.nota span{font-size:15px}
+
+.video{position:relative;border-radius:14px;overflow:hidden;background:#000;aspect-ratio:848/478;max-width:100%}
+.video video{width:100%;height:100%;display:block;object-fit:cover}
+.selo{position:absolute;left:12px;top:12px;background:var(--verde);color:#04140b;font:700 12px var(--f-dado);letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:4px}
+
+.ganhos{display:grid;gap:1px;background:var(--linha);border:1px solid var(--linha);border-radius:14px;overflow:hidden;grid-template-columns:1fr}
+@media (min-width:700px){.ganhos{grid-template-columns:1fr 1fr}}
+@media (min-width:1000px){.ganhos{grid-template-columns:1fr 1fr 1fr}}
+.ganho{background:var(--chapa);padding:24px 22px 26px;display:grid;gap:10px;align-content:start}
+.ganho h3{font-size:28px}
+.ganho p{color:#c3c9d4;font-size:16px}
+.ganho small{font:500 12px var(--f-dado);color:var(--led);letter-spacing:.04em}
+
+.etapas{list-style:none;margin:0;padding:0;display:grid;gap:16px;counter-reset:e}
+@media (min-width:860px){.etapas{grid-template-columns:repeat(4,1fr)}}
+.etapas li{counter-increment:e;border-top:2px solid var(--bordo);padding-top:14px;display:grid;gap:6px;align-content:start}
+.etapas li::before{content:counter(e);font:800 34px var(--f-display);color:var(--bordo-vivo)}
+.etapas b{font-family:var(--f-display);font-size:24px;font-weight:700;line-height:1.05}
+.etapas span{color:#c3c9d4;font-size:15.5px}
+.destaque{background:var(--chapa);border:1px solid var(--linha);border-radius:14px;padding:20px 22px;color:#d5dae3}
+.destaque strong{color:var(--led)}
+
+.ficha{overflow-x:auto;border:1px solid var(--linha);border-radius:14px}
+.ficha table{border-collapse:collapse;width:100%;min-width:560px}
+.ficha th,.ficha td{text-align:left;padding:11px 16px;border-bottom:1px solid var(--linha);vertical-align:top}
+.ficha tr:last-child th,.ficha tr:last-child td{border-bottom:0}
+.ficha th{font-weight:600;color:var(--aco);width:30%;font-size:15px}
+.ficha td{font-family:var(--f-dado);font-size:13px;color:var(--texto)}
+.ficha caption{caption-side:top;text-align:left;padding:14px 16px 4px;color:var(--aco);font-size:14px}
+
+.cidades{display:flex;flex-wrap:wrap;gap:10px;padding:0;margin:0}
+.cidades li{list-style:none;font:700 clamp(26px,5vw,40px) var(--f-display);text-transform:uppercase;letter-spacing:.02em;padding:10px 18px;border:1px solid var(--linha);border-radius:10px;background:var(--chapa)}
+.cidades li small{display:block;font:500 11px var(--f-dado);letter-spacing:.1em;color:var(--aco)}
+
+.contato{background:var(--bordo);border-radius:18px;padding:36px 24px;display:grid;gap:16px}
+.contato h2{color:#fff}
+.contato p{color:#f3d9e1;font-size:18px}
+.fone{font:800 clamp(34px,8vw,60px) var(--f-display);color:#fff;letter-spacing:.01em;user-select:all}
+.botoes{display:flex;flex-wrap:wrap;gap:10px}
+.btn.zap{background:#fff;color:#5e1129}
+.btn.copiar{background:rgba(255,255,255,.14);color:#fff}
+.rodape{padding:28px 16px 40px;text-align:center;color:#6d7687;font-size:13px;background:var(--noite)}
+@media (prefers-reduced-motion:reduce){.rolar::after{animation:none}}
+</style>
+</head>
+<body>
+
+
+<section id="historia" aria-label="Apresentação do abrigo">
+  <div id="palco">
+    <div class="ceu dia"></div><div class="ceu noite" id="ceuNoite"></div>
+    <canvas id="cena" aria-label="Modelo 3D do abrigo de ônibus"></canvas>
+    <div class="vinheta"></div>
+    <div id="rotulos"><svg id="fios" aria-hidden="true"></svg></div>
+    <div class="topo"><span class="marca">Delta <span>Comunicação Visual</span></span><span class="fase" id="fase">Abrigo de ônibus</span></div>
+    <nav class="indice" id="indice" aria-label="Etapas"></nav>
+    <div class="barra"><i id="barra"></i></div>
+    <div id="painelExplorar" hidden></div>
+    <div class="dica" id="dica">Arraste para girar · pinça ou roda do mouse para aproximar</div>
+    <div class="explorar-ui" role="group" aria-label="Controles do modo 3D">
+      <button type="button" id="bDia" aria-pressed="true">Dia</button>
+      <button type="button" id="bNoite" aria-pressed="false">Noite</button>
+      <button type="button" id="bExplodir" aria-pressed="false">Ver peças separadas</button>
+      <button type="button" id="bPers" aria-pressed="false">Nome e cores</button>
+      <button type="button" class="sair" id="bSair">Voltar</button>
+    </div>
+  </div>
+
+  <div id="passos">
+    <div class="passo abertura" data-nome="Início"><div class="cartao">
+      <span class="etiqueta">Abrigo de ônibus · fabricação Delta</span>
+      <h1>Uma obra que a população <em>usa todos os dias.</em></h1>
+      <p>Abrigo completo, fabricado e montado na nossa fábrica. Tem estrutura galvanizada, cobertura em policarbonato, banco com espaço para cadeirante, luz de LED com energia solar e carregador de celular. Chega pronto e, no local, só encaixa e parafusa.</p>
+      <span class="rolar">Role a tela e veja como ele é feito</span>
+    </div></div>
+
+    <div class="passo" data-nome="Peças"><div class="cartao">
+      <span class="etiqueta">Peça por peça</span>
+      <h2>Cada material foi escolhido para aguentar a rua.</h2>
+      <p>Sol forte, chuva, vento e uso o dia inteiro. Por isso não tem madeira comum, que apodrece, nem vidro, que estilhaça. Também não tem ferro sem proteção, que enferruja. Aqui está tudo o que compõe o abrigo, separado em camadas. Nas próximas telas, ele é montado do zero.</p>
+    </div></div>
+
+    <div class="passo dir" data-nome="Fundação"><div class="cartao">
+      <span class="etiqueta">1 · Fundação</span>
+      <h2>A base fica pronta antes de a parada chegar.</h2>
+      <p>Logo no início do contrato, entregamos as quatro sapatas metálicas e um gabarito com as distâncias exatas. A equipe da prefeitura concreta, alinha e nivela. No dia da instalação não tem obra: o abrigo só desce sobre elas.</p>
+      <ul class="dados"><li>Sapata<b>tubo galvanizado 60×60 mm</b></li><li>Parte concretada<b>500 mm</b></li><li>Gabarito de posição<b>incluso</b></li></ul>
+    </div></div>
+
+    <div class="passo" data-nome="Estrutura"><div class="cartao">
+      <span class="etiqueta">2 · Estrutura</span>
+      <h2>Aço galvanizado com pintura automotiva.</h2>
+      <p>Os quatro pés são tubos de 70×70 mm que encaixam por fora das sapatas. Cada pé é travado por um parafuso passante de alta resistência. A galvanização protege o aço contra a ferrugem por dentro e por fora. A pintura PU automotiva dá acabamento de carro novo, na cor que o município escolher.</p>
+      <ul class="dados"><li>Pés<b>70×70×1,50 mm</b></li><li>Travessas e montantes<b>30×50 mm</b></li><li>Travamento<b>1 parafuso M12 8.8 por pé</b></li></ul>
+    </div></div>
+
+    <div class="passo dir" data-nome="Cobertura"><div class="cartao">
+      <span class="etiqueta">3 · Cobertura e água da chuva</span>
+      <h2>A chuva tem caminho certo.</h2>
+      <p>A cobertura cai 10% para trás. A água escorre pelo policarbonato, cai na calha e desce por um tubo escondido atrás do pé traseiro. Ela sai a 5 cm do chão, longe de quem está esperando. Na frente, a cobertura avança cerca de 50 cm além dos pés para proteger quem fica na beira da calçada.</p>
+      <ul class="dados"><li>Cobertura<b>policarbonato fumê 3 mm, UV</b></li><li>Calha<b>galvanizada 80×80 mm</b></li><li>Descida<b>PVC 50 mm</b></li></ul>
+    </div></div>
+
+    <div class="passo" data-nome="Fechamento"><div class="cartao">
+      <span class="etiqueta">4 · Fechamento</span>
+      <h2>Protege do vento sem esconder ninguém.</h2>
+      <p>Laterais e fundo em policarbonato compacto cristal, o material usado em proteções de estádio. É muito mais resistente a impacto que o vidro e não estilhaça. Quem espera vê o ônibus chegar, e quem passa vê quem está ali, o que ajuda na segurança. Se uma placa for danificada, ela é trocada sozinha.</p>
+      <ul class="dados"><li>Laterais e fundo<b>policarbonato cristal 3 mm, UV</b></li><li>Adesivos laterais<b>vinil fundido 1,80 × 0,50 m</b></li></ul>
+    </div></div>
+
+    <div class="passo dir" data-nome="Acessibilidade"><div class="cartao">
+      <span class="etiqueta">5 · Banco e acessibilidade</span>
+      <h2>Lugar para três pessoas sentadas e para uma cadeira de rodas.</h2>
+      <p>O banco tem 2 metros de madeira plástica, feita de plástico reciclado. Ela não apodrece, não solta farpa e nunca precisa de pintura. Ao lado fica um espaço livre de 0,80 × 1,20 m, demarcado no piso e embaixo da cobertura. Essa é a medida que a norma de acessibilidade usa para uma cadeira de rodas.</p>
+      <ul class="dados"><li>Altura do assento<b>0,43 m</b></li><li>Assento e encosto<b>tábuas 100×32 mm</b></li><li>Espaço livre<b>0,80 × 1,20 m (NBR 9050)</b></li></ul>
+    </div></div>
+
+    <div class="passo" data-nome="Identidade"><div class="cartao">
+      <span class="etiqueta">6 · Identidade do município</span>
+      <h2>O nome da cidade em cada bairro.</h2>
+      <p>A platibanda em ACM fecha o topo nos quatro lados e esconde a calha, a estrutura e a bateria. Na frente vão o nome e o brasão do município. Escolha o nome e as cores, só com tons que existem na cartela de ACM:</p>
+      <div class="personalizar" id="personalizar">
+        <div class="cidade"><input id="nomeCidade" type="text" maxlength="24" placeholder="Nome do município" autocomplete="off" aria-label="Nome do município"></div>
+        <div class="cores" id="cores">
+          <div class="abas" role="tablist" aria-label="O que pintar">
+            <button type="button" role="tab" aria-selected="true" data-alvo="acm">Platibanda (ACM)</button>
+            <button type="button" role="tab" aria-selected="false" data-alvo="estrutura">Estrutura metálica</button>
+          </div>
+          <div class="filtros" role="group" aria-label="Acabamento">
+            <button type="button" data-filtro="fosco" aria-pressed="true">Fosco</button>
+            <button type="button" data-filtro="brilho" aria-pressed="false">Brilho</button>
+            <button type="button" data-filtro="metalico" aria-pressed="false">Metálico</button>
+          </div>
+          <div class="amostras" id="amostras" role="radiogroup" aria-label="Cores da cartela"></div>
+          <div class="escolha"><i id="corAmostra"></i><span id="corNome"></span><b id="corCodigo"></b></div>
+          <p class="aviso-cor">Cores da cartela de ACM Bold 2025, com o código da chapa. Na tela o tom é aproximado: confirme na amostra física.</p>
+        </div>
+      </div>
+      <button class="btn claro so-cel" type="button" id="bPersCel">Personalizar nome e cores</button>
+    </div></div>
+
+    <div class="passo dir" data-nome="Energia"><div class="cartao">
+      <span class="etiqueta">7 · Energia solar</span>
+      <h2>Energia do sol, sem fio até o poste.</h2>
+      <p>Um painel solar carrega uma bateria de lítio, os dois presos na estrutura metálica, nunca apoiados no policarbonato. Os cabos correm por dentro dos tubos. O abrigo não precisa de ligação na rede, não gera conta de luz e não pede obra elétrica na calçada.</p>
+      <ul class="dados"><li>Painel<b>monocristalino 100 Wp</b></li><li>Bateria<b>lítio 555 Wh · 12 V</b></li><li>Autonomia<b>2 noites sem sol</b></li></ul>
+    </div></div>
+
+    <div class="passo" data-nome="À noite"><div class="cartao">
+      <span class="etiqueta">8 · À noite</span>
+      <h2>Escureceu, a luz acende sozinha.</h2>
+      <p>Uma fotocélula liga o LED quando escurece. Quem pega o ônibus da madrugada ou volta do trabalho à noite espera num lugar claro, visível para o motorista e para quem passa. O carregador USB-C e USB-A é à prova d'água. Se a bateria baixar, ele desliga primeiro e a luz continua acesa.</p>
+      <ul class="dados"><li>Iluminação<b>fita LED 2 m · 4000 K · IP65</b></li><li>Carregador<b>30 W · USB-C PD + USB-A</b></li></ul>
+    </div></div>
+
+    <div class="passo dir" data-nome="Ver em 3D"><div class="cartao">
+      <span class="etiqueta">Pronto</span>
+      <h2>Veja de todos os lados.</h2>
+      <p>Gire o abrigo com o dedo ou com o mouse, aproxime, veja de dia e de noite ou com as peças separadas.</p>
+      <div class="botoes"><button class="btn claro" type="button" id="bExplorar">Girar o abrigo em 3D</button></div>
+    </div></div>
+  </div>
+</section>
+
+<section class="secao" id="medidas">
+  <div class="miolo">
+    <span class="sobre">Medidas</span>
+    <h2>Cabe na calçada e deixa espaço para quem passa.</h2>
+    <p class="lead">A cobertura tem 3,00 m de frente por 1,60 m de fundo, mas os pés ocupam só 1,00 m no chão. O resto é balanço, então a calçada continua livre embaixo dela.</p>
+    <div class="desenhos">
+      <figure class="prancha" style="margin:0"><h3>Vista frontal</h3><svg id="dFrente" viewBox="0 0 3950 3050" role="img" aria-label="Desenho da vista frontal com medidas"></svg></figure>
+      <figure class="prancha" style="margin:0"><h3>Vista lateral</h3><svg id="dLado" viewBox="0 0 2100 3050" role="img" aria-label="Desenho da vista lateral com medidas"></svg></figure>
+    </div>
+    <div class="notas">
+      <div class="nota"><b>2,20 m</b><span>de altura livre por dentro. Ninguém bate a cabeça.</span></div>
+      <div class="nota"><b>0,50 m</b><span>de cobertura à frente dos pés, sobre quem espera na beira da calçada.</span></div>
+      <div class="nota"><b>1,00 m</b><span>de fundo ocupado no chão pela estrutura.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="secao alt" id="real">
+  <div class="miolo">
+    <span class="sobre">Não é só desenho</span>
+    <h2>Ela já existe. Pronta, na fábrica.</h2>
+    <p class="lead">Unidades do lote de Nonoai, montadas e acabadas antes de seguir para a instalação. O que aparece no 3D é o que sai daqui.</p>
+    <div class="video">
+      <video id="video" src="parada-fabrica.mp4" poster="poster.jpg" muted loop playsinline preload="metadata" controls></video>
+      <span class="selo">Vídeo real</span>
+    </div>
+  </div>
+</section>
+
+<section class="secao">
+  <div class="miolo">
+    <span class="sobre">O que o município ganha</span>
+    <h2>Seis coisas que a população percebe.</h2>
+    <div class="ganhos">
+      <div class="ganho"><small>segurança</small><h3>Ponto claro à noite</h3><p>A luz acende sozinha ao escurecer. Quem espera fica visível para o motorista e para a rua, sem nenhum custo de energia para a prefeitura.</p></div>
+      <div class="ganho"><small>inclusão</small><h3>Lugar para todos</h3><p>Espaço coberto para cadeira de rodas na medida da NBR 9050 e banco na altura certa para idosos e gestantes.</p></div>
+      <div class="ganho"><small>durabilidade</small><h3>Manutenção quase zero</h3><p>Aço galvanizado com pintura PU, madeira plástica e policarbonato com proteção UV. Não tem nada para pintar todo ano nem peça que apodrece.</p></div>
+      <div class="ganho"><small>instalação</small><h3>Sem transtorno na rua</h3><p>O abrigo chega montado de caminhão com Munck. Encaixa nas sapatas, parafusa e a calçada fica liberada no mesmo dia.</p></div>
+      <div class="ganho"><small>identidade</small><h3>A marca da cidade</h3><p>Nome e brasão do município na frente e nas laterais. Uma obra que a população reconhece e vê funcionando todos os dias.</p></div>
+      <div class="ganho"><small>conforto</small><h3>Sombra, chuva e celular</h3><p>Cobertura que avança sobre a calçada, chuva desviada para trás e carregador USB para quem precisa sair com o celular carregado.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="secao alt">
+  <div class="miolo">
+    <span class="sobre">Para o setor de compras</span>
+    <h2>Como contratar.</h2>
+    <ol class="etapas">
+      <li><b>Documentação técnica</b><span>Fornecemos os subsídios técnicos para o termo de referência e para a pesquisa de preços.</span></li>
+      <li><b>Sapatas e gabarito</b><span>Enviamos as sapatas no início. A prefeitura concreta, alinha e nivela nos endereços escolhidos.</span></li>
+      <li><b>Arte aprovada</b><span>Nome, brasão, cores e posição dos adesivos são aprovados antes da produção em série.</span></li>
+      <li><b>Instalação</b><span>Entregamos montado, encaixamos nas sapatas, parafusamos, conferimos e deixamos o local limpo.</span></li>
+    </ol>
+    <p class="destaque">Capacidade de produção informada: <strong>até 23 unidades em 30 dias</strong>, contados da liberação da arte e das fundações.</p>
+
+    <div class="ficha" role="region" aria-label="Ficha técnica" tabindex="0">
+      <table>
+        <caption>Ficha técnica</caption>
+        <tbody>
+          <tr><th>Dimensões</th><td>3,00 m de frente · 1,60 m de fundo · 2,50 m de altura · 2,20 m livres por dentro</td></tr>
+          <tr><th>Estrutura</th><td>Tubos galvanizados · pés 70×70×1,50 mm · travessas 30×50×1,25 mm · terças 20×30×0,95 mm</td></tr>
+          <tr><th>Acabamento</th><td>Pintura PU automotiva sobre fundo compatível, no tom escolhido da cartela de ACM (padrão: preto)</td></tr>
+          <tr><th>Fixação</th><td>4 sapatas 60×60×1,20 mm, 500 mm concretados · 1 parafuso M12 8.8 galvanizado por pé</td></tr>
+          <tr><th>Cobertura</th><td>Policarbonato compacto fumê 3 mm com UV · caimento de 10% para trás</td></tr>
+          <tr><th>Fechamentos</th><td>Policarbonato compacto cristal 3 mm com UV · placas substituíveis</td></tr>
+          <tr><th>Platibanda</th><td>Quadro em tubo 20×20 mm revestido em ACM 3 mm nos quatro lados · cor da cartela de ACM (padrão: Bordô Fosco BD222F)</td></tr>
+          <tr><th>Comunicação visual</th><td>Vinil fundido · frontal com nome e brasão · 2 laterais de 1,80 × 0,50 m (esquerda na cor da platibanda, direita branca)</td></tr>
+          <tr><th>Banco</th><td>Madeira plástica reciclada 100×32 mm · 2,00 m · 3 lugares · assento a 0,43 m</td></tr>
+          <tr><th>Acessibilidade</th><td>Espaço livre de 0,80 × 1,20 m demarcado no piso (NBR 9050)</td></tr>
+          <tr><th>Drenagem</th><td>Calha galvanizada 80×80 mm · descida PVC 50 mm atrás do pé traseiro esquerdo</td></tr>
+          <tr><th>Energia</th><td>Painel 100 Wp · bateria de lítio 555 Wh · 12 V · autonomia de 2 noites</td></tr>
+          <tr><th>Iluminação</th><td>Fita LED 2 m · 4000 K · IP65 · perfil de alumínio com difusor · acende por fotocélula</td></tr>
+          <tr><th>Carregador</th><td>USB-C PD + USB-A · 30 W · à prova d'água · desliga antes da luz se a bateria baixar</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="secao">
+  <div class="miolo">
+    <span class="sobre">Quem já escolheu</span>
+    <h2>Municípios da região que já têm.</h2>
+    <ul class="cidades">
+      <li><small>RS</small>Ronda Alta</li>
+      <li><small>RS</small>Três Palmeiras</li>
+      <li><small>RS</small>Nonoai</li>
+    </ul>
+  </div>
+</section>
+
+<section class="secao">
+  <div class="miolo">
+    <div class="contato">
+      <h2>Vamos levar para o seu município?</h2>
+      <p>Fale com o Eduardo, da Delta Comunicação Visual. Ele pode levar a maquete física até a prefeitura e tirar as dúvidas da equipe técnica.</p>
+      <div class="fone" id="fone">(54) 99257-4831</div>
+      <div class="botoes">
+        <a class="btn zap" href="https://wa.me/5554992574831?text=Ol%C3%A1%20Eduardo%2C%20vi%20a%20apresenta%C3%A7%C3%A3o%20do%20abrigo%20de%20%C3%B4nibus." target="_blank" rel="noopener">Chamar no WhatsApp</a>
+        <button class="btn copiar" id="copiar" type="button">Copiar número</button>
+      </div>
+    </div>
+  </div>
+</section>
+<footer class="rodape">Delta Comunicação Visual · Modelo 3D ilustrativo feito com as medidas do projeto · O vídeo mostra unidades reais.</footer>
+
+<script type="application/json" id="cadeiraDados">{"Cadeira - Pneus": {"cor": [24, 26, 29], "p": "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", "i": "JQApAHEAcQBtACUAbwAnACQAJABsAG8AKQAlACQAJAAnACkAbwBsAG0AbQBxAG8AKQAtAHUAdQBxACkAcwArACcAJwBvAHMAKQAnACsAKwAtACkAcwBvAHEAcQB1AHMALQAxAHkAeQB1AC0AdwAvACsAKwBzAHcALQArAC8ALwAxAC0AdwBzAHUAdQB5AHcAMQA1AH0AfQB5ADEAewAzAC8ALwB3AHsAMQAvADMAMwA1ADEAewB3AHkAeQB9AHsAOwCDAH0AfQA1ADsAewB/ADcANwAzAHsANQAzADcANwA7ADUAfwB7AH0AfQCDAH8AQQCJAIMAgwA7AEEAfwCBADkAOQA3AH8AOwA3ADkAOQBBADsAgQB/AIMAgwCJAIEARACMAIkAiQBBAEQAgQCFAD0APQA5AIEAQQA5AD0APQBEAEEAhQCBAIkAiQCMAIUARgCOAIwAjABEAEYAhQCHAD8APwA9AIUARAA9AD8APwBGAEQAhwCFAIwAjACOAIcARwCPAI4AjgBGAEcAhwCKAEIAQgA/AIcARgA/AEIAQgBHAEYAigCHAI4AjgCPAIoARQCNAI8AjwBHAEUAigCGAD4APgBCAIoAQgA+AEUARQBHAEIAjQCGAIoAigCPAI0AQwCLAI0AjQBFAEMAhgCEADwAPAA+AIYAPgA8AEMAQwBFAD4AiwCEAIYAhgCNAIsAQACIAIsAiwBDAEAAhACAADgAOAA8AIQAPAA4AEAAQABDADwAiACAAIQAhACLAIgAOgCCAIgAiABAADoAgAB+ADYANgA4AIAAOAA2ADoAOgBAADgAggB+AIAAgACIAIIANAB8AIIAggA6ADQAfgB6ADIAMgA2AH4ANgAyADQANAA6ADYAfAB6AH4AfgCCAHwANAAwAHgAeAB8ADQAdgAuADIAMgB6AHYAMgAuADAAMAA0ADIAeAB2AHoAegB8AHgAMAAsAHQAdAB4ADAAcgAqAC4ALgB2AHIALgAqACwALAAwAC4AdAByAHYAdgB4AHQALAAoAHAAcAB0ACwAbgAmACoAKgByAG4AKgAmACgAKAAsACoAcABuAHIAcgB0AHAAKAAiAGoAagBwACgAawAjACYAJgBuAGsAJgAjACIAIgAoACYAcABqAGsAawBuAHAAagAiAB4AHgBmAGoAIAAjAGsAawBoACAAIAAeACIAIgAjACAAagBmAGgAaABrAGoAZgAeABoAGgBiAGYAHAAgAGgAaABkABwAHAAaAB4AHgAgABwAZgBiAGQAZABoAGYAYgAaABYAFgBeAGIAGAAcAGQAZABgABgAGAAWABoAGgAcABgAYgBeAGAAYABkAGIAXgAWABIAEgBaAF4AFAAYAGAAYABcABQAFAASABYAFgAYABQAXgBaAFwAXABgAF4AVABaABIAEgAMAFQAFABcAFgAWAAQABQAEAAMABIAEgAUABAAWgBUAFgAWABcAFoATgBUAAwADAAGAE4AEABYAFYAVgAOABAADgAGAAwADAAQAA4AVABOAFYAVgBYAFQASwBOAAYABgADAEsADgBWAFIAUgAKAA4ACgADAAYABgAOAAoATgBLAFIAUgBWAE4ASQBLAAMAAwABAEkACgBSAFAAUAAIAAoACAABAAMAAwAKAAgASwBJAFAAUABSAEsASABJAAEAAQAAAEgACABQAE0ATQAFAAgABQAAAAEAAQAIAAUASQBIAE0ATQBQAEkASgBIAAAAAAACAEoABQBNAFEAUQAJAAUAAgAAAAUABQAJAAIATQBIAEoASgBRAE0ATABKAAIAAgAEAEwACQBRAFMAUwALAAkABAACAAkACQALAAQAUQBKAEwATABTAFEATwBMAAQABAAHAE8ACwBTAFcAVwAPAAsABwAEAAsACwAPAAcAUwBMAE8ATwBXAFMAVQBPAAcABwANAFUADwBXAFkAWQARAA8ADQAHAA8ADwARAA0AVwBPAFUAVQBZAFcAWwBVAA0ADQATAFsAEQBZAF0AXQAVABEAEwANABEAEQAVABMAWQBVAFsAWwBdAFkAWwATABcAFwBfAFsAGQAVAF0AXQBhABkAFwATABUAFQAZABcAXQBbAF8AXwBhAF0AXwAXABsAGwBjAF8AHQAZAGEAYQBlAB0AGwAXABkAGQAdABsAYQBfAGMAYwBlAGEAYwAbAB8AHwBnAGMAIQAdAGUAZQBpACEAHwAbAB0AHQAhAB8AZQBjAGcAZwBpAGUAZwAfACUAJQBtAGcAJAAhAGkAaQBsACQAJQAfACEAIQAkACUAaQBnAG0AbQBsAGkAdQF5AcEBwQG9AXUBvwF3AXQBdAG8Ab8BeQF1AXQBdAF3AXkBvwG8Ab0BvQHBAb8BeQF9AcUBxQHBAXkBwwF7AXcBdwG/AcMBeQF3AXsBewF9AXkBwwG/AcEBwQHFAcMBfQGBAckByQHFAX0BxwF/AXsBewHDAccBfQF7AX8BfwGBAX0BxwHDAcUBxQHJAccBgQGFAc0BzQHJAYEBywGDAX8BfwHHAcsBgQF/AYMBgwGFAYEBywHHAckByQHNAcsBiwHTAc0BzQGFAYsBywHPAYcBhwGDAcsBhQGDAYcBhwGLAYUBzwHLAc0BzQHTAc8BkQHZAdMB0wGLAZEBzwHRAYkBiQGHAc8BiwGHAYkBiQGRAYsB0QHPAdMB0wHZAdEBlAHcAdkB2QGRAZQB0QHVAY0BjQGJAdEBkQGJAY0BjQGUAZEB1QHRAdkB2QHcAdUBlgHeAdwB3AGUAZYB1QHXAY8BjwGNAdUBlAGNAY8BjwGWAZQB1wHVAdwB3AHeAdcBlwHfAd4B3gGWAZcB1wHaAZIBkgGPAdcBlgGPAZIBkgGXAZYB2gHXAd4B3gHfAdoBlQHdAd8B3wGXAZUB2gHWAY4BjgGSAdoBkgGOAZUBlQGXAZIB3QHWAdoB2gHfAd0BkwHbAd0B3QGVAZMB1gHUAYwBjAGOAdYBjgGMAZMBkwGVAY4B2wHUAdYB1gHdAdsBkAHYAdsB2wGTAZAB1AHQAYgBiAGMAdQBjAGIAZABkAGTAYwB2AHQAdQB1AHbAdgBigHSAdgB2AGQAYoB0AHOAYYBhgGIAdABiAGGAYoBigGQAYgB0gHOAdAB0AHYAdIBhAHMAdIB0gGKAYQBzgHKAYIBggGGAc4BhgGCAYQBhAGKAYYBzAHKAc4BzgHSAcwBhAGAAcgByAHMAYQBxgF+AYIBggHKAcYBggF+AYABgAGEAYIByAHGAcoBygHMAcgBgAF8AcQBxAHIAYABwgF6AX4BfgHGAcIBfgF6AXwBfAGAAX4BxAHCAcYBxgHIAcQBfAF4AcABwAHEAXwBvgF2AXoBegHCAb4BegF2AXgBeAF8AXoBwAG+AcIBwgHEAcABeAFyAboBugHAAXgBuwFzAXYBdgG+AbsBdgFzAXIBcgF4AXYBwAG6AbsBuwG+AcABugFyAW4BbgG2AboBcAFzAbsBuwG4AXABcAFuAXIBcgFzAXABugG2AbgBuAG7AboBtgFuAWoBagGyAbYBbAFwAbgBuAG0AWwBbAFqAW4BbgFwAWwBtgGyAbQBtAG4AbYBsgFqAWYBZgGuAbIBaAFsAbQBtAGwAWgBaAFmAWoBagFsAWgBsgGuAbABsAG0AbIBrgFmAWIBYgGqAa4BZAFoAbABsAGsAWQBZAFiAWYBZgFoAWQBrgGqAawBrAGwAa4BpAGqAWIBYgFcAaQBZAGsAagBqAFgAWQBYAFcAWIBYgFkAWABqgGkAagBqAGsAaoBngGkAVwBXAFWAZ4BYAGoAaYBpgFeAWABXgFWAVwBXAFgAV4BpAGeAaYBpgGoAaQBmwGeAVYBVgFTAZsBXgGmAaIBogFaAV4BWgFTAVYBVgFeAVoBngGbAaIBogGmAZ4BmQGbAVMBUwFRAZkBWgGiAaABoAFYAVoBWAFRAVMBUwFaAVgBmwGZAaABoAGiAZsBmAGZAVEBUQFQAZgBWAGgAZ0BnQFVAVgBVQFQAVEBUQFYAVUBmQGYAZ0BnQGgAZkBmgGYAVABUAFSAZoBVQGdAaEBoQFZAVUBUgFQAVUBVQFZAVIBnQGYAZoBmgGhAZ0BnAGaAVIBUgFUAZwBWQGhAaMBowFbAVkBVAFSAVkBWQFbAVQBoQGaAZwBnAGjAaEBnwGcAVQBVAFXAZ8BWwGjAacBpwFfAVsBVwFUAVsBWwFfAVcBowGcAZ8BnwGnAaMBpQGfAVcBVwFdAaUBXwGnAakBqQFhAV8BXQFXAV8BXwFhAV0BpwGfAaUBpQGpAacBqwGlAV0BXQFjAasBYQGpAa0BrQFlAWEBYwFdAWEBYQFlAWMBqQGlAasBqwGtAakBqwFjAWcBZwGvAasBaQFlAa0BrQGxAWkBZwFjAWUBZQFpAWcBrQGrAa8BrwGxAa0BrwFnAWsBawGzAa8BbQFpAbEBsQG1AW0BawFnAWkBaQFtAWsBsQGvAbMBswG1AbEBswFrAW8BbwG3AbMBcQFtAbUBtQG5AXEBbwFrAW0BbQFxAW8BtQGzAbcBtwG5AbUBtwFvAXUBdQG9AbcBdAFxAbkBuQG8AXQBdQFvAXEBcQF0AXUBuQG3Ab0BvQG8AbkBqQCtAN0A3QDZAKkA2wCrAKgAqADYANsArQCpAKgAqACrAK0A2wDYANkA2QDdANsArQCzAOMA4wDdAK0A3wCvAKsAqwDbAN8ArQCrAK8ArwCzAK0A3wDbAN0A3QDjAN8AswC6AOoA6gDjALMA4QCxAK8ArwDfAOEAswCvALEAsQC6ALMA4QDfAOMA4wDqAOEAvADsAOoA6gC6ALwA4QDlALUAtQCxAOEAugCxALUAtQC8ALoA5QDhAOoA6gDsAOUAvgDuAOwA7AC8AL4A5QDnALcAtwC1AOUAvAC1ALcAtwC+ALwA5wDlAOwA7ADuAOcAvwDvAO4A7gC+AL8A5wDoALgAuAC3AOcAvgC3ALgAuAC/AL4A6ADnAO4A7gDvAOgAvQDtAO8A7wC/AL0A6ADmALYAtgC4AOgAuAC2AL0AvQC/ALgA7QDmAOgA6ADvAO0AuwDrAO0A7QC9ALsA5gDkALQAtAC2AOYAtgC0ALsAuwC9ALYA6wDkAOYA5gDtAOsAuQDpAOsA6wC7ALkA5ADgALAAsAC0AOQAtACwALkAuQC7ALQA6QDgAOQA5ADrAOkAuQCyAOIA4gDpALkA3gCuALAAsADgAN4AsACuALIAsgC5ALAA4gDeAOAA4ADpAOIAsgCsANwA3ADiALIA2gCqAK4ArgDeANoArgCqAKwArACyAK4A3ADaAN4A3gDiANwArACmANYA1gDcAKwA1wCnAKoAqgDaANcAqgCnAKYApgCsAKoA1gDXANoA2gDcANYA1gCmAKIAogDSANYApACnANcA1wDUAKQApACiAKYApgCnAKQA1gDSANQA1ADXANYA0gCiAJwAnADMANIAoACkANQA1ADQAKAAoACcAKIAogCkAKAA0gDMANAA0ADUANIAzACcAJUAlQDFAMwAngCgANAA0ADOAJ4AngCVAJwAnACgAJ4AzADFAM4AzgDQAMwAwwDFAJUAlQCTAMMAngDOAMoAygCaAJ4AmgCTAJUAlQCeAJoAxQDDAMoAygDOAMUAwQDDAJMAkwCRAMEAmgDKAMgAyACYAJoAmACRAJMAkwCaAJgAwwDBAMgAyADKAMMAwADBAJEAkQCQAMAAmADIAMcAxwCXAJgAlwCQAJEAkQCYAJcAwQDAAMcAxwDIAMEAwgDAAJAAkACSAMIAlwDHAMkAyQCZAJcAkgCQAJcAlwCZAJIAxwDAAMIAwgDJAMcAxADCAJIAkgCUAMQAmQDJAMsAywCbAJkAlACSAJkAmQCbAJQAyQDCAMQAxADLAMkAxgDEAJQAlACWAMYAmwDLAM8AzwCfAJsAlgCUAJsAmwCfAJYAywDEAMYAxgDPAMsAxgCWAJ0AnQDNAMYAoQCfAM8AzwDRAKEAnQCWAJ8AnwChAJ0AzwDGAM0AzQDRAM8AzQCdAKMAowDTAM0ApQChANEA0QDVAKUAowCdAKEAoQClAKMA0QDNANMA0wDVANEA0wCjAKkAqQDZANMAqAClANUA1QDYAKgAqQCjAKUApQCoAKkA1QDTANkA2QDYANUACQENAT0BPQE5AQkBOwELAQgBCAE4ATsBDQEJAQgBCAELAQ0BOwE4ATkBOQE9ATsBDQETAUMBQwE9AQ0BPwEPAQsBCwE7AT8BDQELAQ8BDwETAQ0BPwE7AT0BPQFDAT8BEwEaAUoBSgFDARMBQQERAQ8BDwE/AUEBEwEPAREBEQEaARMBQQE/AUMBQwFKAUEBHAFMAUoBSgEaARwBQQFFARUBFQERAUEBGgERARUBFQEcARoBRQFBAUoBSgFMAUUBHgFOAUwBTAEcAR4BRQFHARcBFwEVAUUBHAEVARcBFwEeARwBRwFFAUwBTAFOAUcBHwFPAU4BTgEeAR8BRwFIARgBGAEXAUcBHgEXARgBGAEfAR4BSAFHAU4BTgFPAUgBHQFNAU8BTwEfAR0BSAFGARYBFgEYAUgBGAEWAR0BHQEfARgBTQFGAUgBSAFPAU0BGwFLAU0BTQEdARsBRgFEARQBFAEWAUYBFgEUARsBGwEdARYBSwFEAUYBRgFNAUsBGQFJAUsBSwEbARkBRAFAARABEAEUAUQBFAEQARkBGQEbARQBSQFAAUQBRAFLAUkBGQESAUIBQgFJARkBPgEOARABEAFAAT4BEAEOARIBEgEZARABQgE+AUABQAFJAUIBEgEMATwBPAFCARIBOgEKAQ4BDgE+AToBDgEKAQwBDAESAQ4BPAE6AT4BPgFCATwBDAEGATYBNgE8AQwBNwEHAQoBCgE6ATcBCgEHAQYBBgEMAQoBNgE3AToBOgE8ATYBNgEGAQIBAgEyATYBBAEHATcBNwE0AQQBBAECAQYBBgEHAQQBNgEyATQBNAE3ATYBMgECAfwA/AAsATIBAAEEATQBNAEwAQABAAH8AAIBAgEEAQABMgEsATABMAE0ATIBLAH8APUA9QAlASwB/gAAATABMAEuAf4A/gD1APwA/AAAAf4ALAElAS4BLgEwASwBIwElAfUA9QDzACMB/gAuASoBKgH6AP4A+gDzAPUA9QD+APoAJQEjASoBKgEuASUBIQEjAfMA8wDxACEB+gAqASgBKAH4APoA+ADxAPMA8wD6APgAIwEhASgBKAEqASMBIAEhAfEA8QDwACAB+AAoAScBJwH3APgA9wDwAPEA8QD4APcAIQEgAScBJwEoASEBIgEgAfAA8ADyACIB9wAnASkBKQH5APcA8gDwAPcA9wD5APIAJwEgASIBIgEpAScBJAEiAfIA8gD0ACQB+QApASsBKwH7APkA9ADyAPkA+QD7APQAKQEiASQBJAErASkBJgEkAfQA9AD2ACYB+wArAS8BLwH/APsA9gD0APsA+wD/APYAKwEkASYBJgEvASsBJgH2AP0A/QAtASYBAQH/AC8BLwExAQEB/QD2AP8A/wABAf0ALwEmAS0BLQExAS8BLQH9AAMBAwEzAS0BBQEBATEBMQE1AQUBAwH9AAEBAQEFAQMBMQEtATMBMwE1ATEBMwEDAQkBCQE5ATMBCAEFATUBNQE4AQgBCQEDAQUBBQEIAQkBNQEzATkBOQE4ATUB", "i32": false}, "Cadeira - Metal": {"cor": [145, 151, 158], "p": "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", "i": "MQA1AJAAkACMADEAjgAzADAAMACLAI4ANQAxADAAMAAzADUAjgCLAIwAjACQAI4ANQA5AJQAlACQADUAkgA3ADMAMwCOAJIANQAzADcANwA5ADUAkgCOAJAAkACUAJIAOQA9AJgAmACUADkAlgA7ADcANwCSAJYAOQA3ADsAOwA9ADkAlgCSAJQAlACYAJYAPQBBAJwAnACYAD0AmgA/ADsAOwCWAJoAPQA7AD8APwBBAD0AmgCWAJgAmACcAJoARQCgAJwAnABBAEUAmgCeAEMAQwA/AJoAQQA/AEMAQwBFAEEAngCaAJwAnACgAJ4ASQCkAKAAoABFAEkAngCiAEcARwBDAJ4ARQBDAEcARwBJAEUAogCeAKAAoACkAKIATQCoAKQApABJAE0AogCmAEsASwBHAKIASQBHAEsASwBNAEkApgCiAKQApACoAKYAUgCtAKgAqABNAFIApgCqAE8ATwBLAKYATQBLAE8ATwBSAE0AqgCmAKgAqACtAKoAUwCuAK0ArQBSAFMAqgCrAFAAUABPAKoAUgBPAFAAUABTAFIAqwCqAK0ArQCuAKsAUQCsAK4ArgBTAFEAqwCpAE4ATgBQAKsAUABOAFEAUQBTAFAArACpAKsAqwCuAKwATACnAKwArABRAEwAqQClAEoASgBOAKkATgBKAEwATABRAE4ApwClAKkAqQCsAKcASACjAKcApwBMAEgApQChAEYARgBKAKUASgBGAEgASABMAEoAowChAKUApQCnAKMARACfAKMAowBIAEQAoQCdAEIAQgBGAKEARgBCAEQARABIAEYAnwCdAKEAoQCjAJ8AQACbAJ8AnwBEAEAAnQCZAD4APgBCAJ0AQgA+AEAAQABEAEIAmwCZAJ0AnQCfAJsAQAA8AJcAlwCbAEAAlQA6AD4APgCZAJUAPgA6ADwAPABAAD4AlwCVAJkAmQCbAJcAPAA4AJMAkwCXADwAkQA2ADoAOgCVAJEAOgA2ADgAOAA8ADoAkwCRAJUAlQCXAJMAOAA0AI8AjwCTADgAjQAyADYANgCRAI0ANgAyADQANAA4ADYAjwCNAJEAkQCTAI8ANAAuAIkAiQCPADQAigAvADIAMgCNAIoAMgAvAC4ALgA0ADIAjwCJAIoAigCNAI8AiQAuACoAKgCFAIkALAAvAIoAigCHACwALAAqAC4ALgAvACwAiQCFAIcAhwCKAIkAhQAqACYAJgCBAIUAKAAsAIcAhwCDACgAKAAmACoAKgAsACgAhQCBAIMAgwCHAIUAgQAmACIAIgB9AIEAJAAoAIMAgwB/ACQAJAAiACYAJgAoACQAgQB9AH8AfwCDAIEAfQAiAB4AHgB5AH0AIAAkAH8AfwB7ACAAIAAeACIAIgAkACAAfQB5AHsAewB/AH0AdQB5AB4AHgAaAHUAIAB7AHcAdwAcACAAHAAaAB4AHgAgABwAeQB1AHcAdwB7AHkAcQB1ABoAGgAWAHEAHAB3AHMAcwAYABwAGAAWABoAGgAcABgAdQBxAHMAcwB3AHUAbQBxABYAFgASAG0AGABzAG8AbwAUABgAFAASABYAFgAYABQAcQBtAG8AbwBzAHEAaABtABIAEgANAGgAFABvAGsAawAQABQAEAANABIAEgAUABAAbQBoAGsAawBvAG0AZwBoAA0ADQAMAGcAEABrAGoAagAPABAADwAMAA0ADQAQAA8AaABnAGoAagBrAGgAaQBnAAwADAAOAGkADwBqAGwAbAARAA8ADgAMAA8ADwARAA4AagBnAGkAaQBsAGoAbgBpAA4ADgATAG4AEQBsAHAAcAAVABEAEwAOABEAEQAVABMAbABpAG4AbgBwAGwAcgBuABMAEwAXAHIAFQBwAHQAdAAZABUAFwATABUAFQAZABcAcABuAHIAcgB0AHAAdgByABcAFwAbAHYAGQB0AHgAeAAdABkAGwAXABkAGQAdABsAdAByAHYAdgB4AHQAegB2ABsAGwAfAHoAHQB4AHwAfAAhAB0AHwAbAB0AHQAhAB8AeAB2AHoAegB8AHgAegAfACMAIwB+AHoAJQAhAHwAfACAACUAIwAfACEAIQAlACMAfAB6AH4AfgCAAHwAfgAjACcAJwCCAH4AKQAlAIAAgACEACkAJwAjACUAJQApACcAgAB+AIIAggCEAIAAggAnACsAKwCGAIIALQApAIQAhACIAC0AKwAnACkAKQAtACsAhACCAIYAhgCIAIQAhgArADEAMQCMAIYAMAAtAIgAiACLADAAMQArAC0ALQAwADEAiACGAIwAjACLAIgAAwAFAAMBAwEBAQMAAwABAf8A/wABAAMAAQD/AP4A/gAAAAEAAAD+AAABAAECAAAAAgAAAQIBAgEEAAIABgAEAAIBAgEEAQYABgEIAAYABgAEAQYBBgEIAQoACgAIAAYBCAEJAQsACwAKAAgBCQEHAQkACQALAAkBBwEFAQcABwAJAAcBAwEFAAcABwAFAQMBAQAAAAIAAgADAAEAAgAEAAMABAAFAAMABAAGAAUABgAHAAUABgAIAAcACAAJAAcACAAKAAkACgALAAkAAAH+AP8A/wACAQAB/wABAQIBAQEEAQIBAQEDAQQBAwEGAQQBAwEFAQYBBQEIAQYBBQEHAQgBBwEJAQgB6QDTANIA0gDoAOkAtADSANMA0wC1ALQAXQC0ALUAtQBeAF0AuwBdAF4AXgC8ALsA2gDZALsAuwC8ANoA2gDpAOgA6ADZANoAtABdALsAuwDSALQAuwDZANIA2QDoANIAvABeALUAtQDaALwAtQDTANoA0wDpANoA3ADVAOgA6ADtANwAtwDVANwA3AC+ALcAYgBdALcAtwC+AGIAuABdAGIAYgDAALgA3gDWALgAuADAAN4A6ADWAN4A3gDtAOgAtwBdALgAuADWALcA1gDVALcA1gDoANUAwABiAL4AvgDeAMAAvgDcAN4A3ADtAN4AZABbAMYAxgDKAGQAXwBbAGQAZABmAF8AxwBfAGYAZgDMAMcA6gDHAMwAzADxAOoA7wDmAOoA6gDxAO8AygDGAOYA5gDvAMoAxwDqAOYA5gBfAMcA5gDGAF8AxgBbAF8A7wDxAMwAzABmAO8AZgDKAO8AZgBkAMoAywBlAGAAYADIAMsAYwBaAGAAYABlAGMAyQDFAFoAWgBjAMkAxQDJAO4A7gDlAMUA6wDlAO4A7gDwAOsAyADrAPAA8ADLAMgAxQDlAOsA6wBaAMUA6wDIAFoAyABgAFoA8ADuAMkAyQBjAPAAYwDLAPAAYwBlAMsAvQC2AF0AXQBhAL0AvQDbANQA1AC2AL0A1ADbAOwA7ADoANQA1wDoAOwA7ADdANcA1wDdAL8AvwC5ANcAvwBhAF0AXQC5AL8AuQBdALYAtgDUALkA1ADXALkA1ADoANcAvQBhAL8AvwDbAL0AvwDdANsA3QDsANsAswC0AF0AXQBcALMAswDRANIA0gC0ALMA6ADSANEA0QDnAOgA2QDoAOcA5wDYANkA2QDYALoAugC7ANkAXABdALsAuwC6AFwAswBcALoAugDRALMAugDYANEA2ADnANEAXQBYAK8ArwC3AF0ArwDNANUA1QC3AK8A1QDNAOMA4wDoANUA4wDPANYA1gDoAOMA1gDPALEAsQC4ANYAsQBYAF0AXQC4ALEArwBYALEAsQDPAK8AzwDNAK8AzwDjAM0AwwBWAF8AXwDHAMMAVgBUAFsAWwBfAFYAWwBUAMEAwQDGAFsAxgDBAN8A3wDmAMYA5gDfAOEA4QDqAOYA4QDDAMcAxwDqAOEAwwDhAN8A3wBWAMMA3wDBAFYAwQBUAFYAxQDCAFUAVQBaAMUAWgBVAFcAVwBgAFoAyABgAFcAVwDEAMgAxADiAOsA6wDIAMQA4gDgAOUA5QDrAOIAwgDFAOUA5QDgAMIAwgDgAOIA4gBVAMIA4gDEAFUAxABXAFUAzgDUAOgA6ADkAM4AtgDUAM4AzgCwALYAtgCwAFkAWQBdALYAuQBdAFkAWQCyALkA0ADXALkAuQCyANAA0ADkAOgA6ADXANAAsgBZALAAsADOALIAzgDQALIAzgDkANAA2gHeATkCOQI1AtoBNwLcAdkB2QE0AjcC3gHaAdkB2QHcAd4BNwI0AjUCNQI5AjcC3gHiAT0CPQI5At4BOwLgAdwB3AE3AjsC3gHcAeAB4AHiAd4BOwI3AjkCOQI9AjsC4gHmAUECQQI9AuIBPwLkAeAB4AE7Aj8C4gHgAeQB5AHmAeIBPwI7Aj0CPQJBAj8C5gHqAUUCRQJBAuYBQwLoAeQB5AE/AkMC5gHkAegB6AHqAeYBQwI/AkECQQJFAkMC7gFJAkUCRQLqAe4BQwJHAuwB7AHoAUMC6gHoAewB7AHuAeoBRwJDAkUCRQJJAkcC8gFNAkkCSQLuAfIBRwJLAvAB8AHsAUcC7gHsAfAB8AHyAe4BSwJHAkkCSQJNAksC9gFRAk0CTQLyAfYBSwJPAvQB9AHwAUsC8gHwAfQB9AH2AfIBTwJLAk0CTQJRAk8C+wFWAlECUQL2AfsBTwJTAvgB+AH0AU8C9gH0AfgB+AH7AfYBUwJPAlECUQJWAlMC/AFXAlYCVgL7AfwBUwJUAvkB+QH4AVMC+wH4AfkB+QH8AfsBVAJTAlYCVgJXAlQC+gFVAlcCVwL8AfoBVAJSAvcB9wH5AVQC+QH3AfoB+gH8AfkBVQJSAlQCVAJXAlUC9QFQAlUCVQL6AfUBUgJOAvMB8wH3AVIC9wHzAfUB9QH6AfcBUAJOAlICUgJVAlAC8QFMAlACUAL1AfEBTgJKAu8B7wHzAU4C8wHvAfEB8QH1AfMBTAJKAk4CTgJQAkwC7QFIAkwCTALxAe0BSgJGAusB6wHvAUoC7wHrAe0B7QHxAe8BSAJGAkoCSgJMAkgC6QFEAkgCSALtAekBRgJCAucB5wHrAUYC6wHnAekB6QHtAesBRAJCAkYCRgJIAkQC6QHlAUACQAJEAukBPgLjAecB5wFCAj4C5wHjAeUB5QHpAecBQAI+AkICQgJEAkAC5QHhATwCPAJAAuUBOgLfAeMB4wE+AjoC4wHfAeEB4QHlAeMBPAI6Aj4CPgJAAjwC4QHdATgCOAI8AuEBNgLbAd8B3wE6AjYC3wHbAd0B3QHhAd8BOAI2AjoCOgI8AjgC3QHXATICMgI4At0BMwLYAdsB2wE2AjMC2wHYAdcB1wHdAdsBOAIyAjMCMwI2AjgCMgLXAdMB0wEuAjIC1QHYATMCMwIwAtUB1QHTAdcB1wHYAdUBMgIuAjACMAIzAjICLgLTAc8BzwEqAi4C0QHVATACMAIsAtEB0QHPAdMB0wHVAdEBLgIqAiwCLAIwAi4CKgLPAcsBywEmAioCzQHRASwCLAIoAs0BzQHLAc8BzwHRAc0BKgImAigCKAIsAioCJgLLAccBxwEiAiYCyQHNASgCKAIkAskByQHHAcsBywHNAckBJgIiAiQCJAIoAiYCHgIiAscBxwHDAR4CyQEkAiACIALFAckBxQHDAccBxwHJAcUBIgIeAiACIAIkAiICGgIeAsMBwwG/ARoCxQEgAhwCHALBAcUBwQG/AcMBwwHFAcEBHgIaAhwCHAIgAh4CFgIaAr8BvwG7ARYCwQEcAhgCGAK9AcEBvQG7Ab8BvwHBAb0BGgIWAhgCGAIcAhoCEQIWArsBuwG2ARECvQEYAhQCFAK5Ab0BuQG2AbsBuwG9AbkBFgIRAhQCFAIYAhYCEAIRArYBtgG1ARACuQEUAhMCEwK4AbkBuAG1AbYBtgG5AbgBEQIQAhMCEwIUAhECEgIQArUBtQG3ARICuAETAhUCFQK6AbgBtwG1AbgBuAG6AbcBEwIQAhICEgIVAhMCFwISArcBtwG8ARcCugEVAhkCGQK+AboBvAG3AboBugG+AbwBFQISAhcCFwIZAhUCGwIXArwBvAHAARsCvgEZAh0CHQLCAb4BwAG8Ab4BvgHCAcABGQIXAhsCGwIdAhkCHwIbAsABwAHEAR8CwgEdAiECIQLGAcIBxAHAAcIBwgHGAcQBHQIbAh8CHwIhAh0CIwIfAsQBxAHIASMCxgEhAiUCJQLKAcYByAHEAcYBxgHKAcgBIQIfAiMCIwIlAiECIwLIAcwBzAEnAiMCzgHKASUCJQIpAs4BzAHIAcoBygHOAcwBJQIjAicCJwIpAiUCJwLMAdAB0AErAicC0gHOASkCKQItAtIB0AHMAc4BzgHSAdABKQInAisCKwItAikCKwLQAdQB1AEvAisC1gHSAS0CLQIxAtYB1AHQAdIB0gHWAdQBLQIrAi8CLwIxAi0CLwLUAdoB2gE1Ai8C2QHWATECMQI0AtkB2gHUAdYB1gHZAdoBMQIvAjUCNQI0AjECXQFfAV0CXQJbAl0BXQFbAlkCWQJbAV0BWwFZAlgCWAJaAVsBWgFYAloCWgJcAVoBXAFaAlwCXAJeAVwBYAFeAVwCXAJeAmABYAJiAWABYAFeAmACYAJiAmQBZAFiAWACYgJjAmUBZQFkAWICYwJhAmMBYwFlAWMCYQJfAmEBYQFjAWECXQJfAWEBYQFfAl0CWwFaAVwBXAFdAVsBXAFeAV0BXgFfAV0BXgFgAV8BYAFhAV8BYAFiAWEBYgFjAWEBYgFkAWMBZAFlAWMBWgJYAlkCWQJcAloCWQJbAlwCWwJeAlwCWwJdAl4CXQJgAl4CXQJfAmACXwJiAmACXwJhAmICYQJjAmICBwKpAagBqAEGAgcCigGoAakBqQGLAYoBewGKAYsBiwF8AXsBkQF7AXwBfAGSAZEBsAGvAZEBkQGSAbABsAEHAgYCBgKvAbABigF7AZEBkQGoAYoBkQGvAagBrwEGAqgBkgF8AYsBiwGwAZIBiwGpAbABqQEHArABsgGrAQYCBgILArIBjQGrAbIBsgGUAY0BgAF7AY0BjQGUAYABjgF7AYABgAGWAY4BtAGsAY4BjgGWAbQBBgKsAbQBtAELAgYCjQF7AY4BjgGsAY0BrAGrAY0BrAEGAqsBlgGAAZQBlAG0AZYBlAGyAbQBsgELArQBggF5AZwBnAGgAYIBfQF5AYIBggGEAX0BnQF9AYQBhAGiAZ0BCAKdAaIBogEPAggCDQIEAggCCAIPAg0CoAGcAQQCBAINAqABnQEIAgQCBAJ9AZ0BBAKcAX0BnAF5AX0BDQIPAqIBogGEAQ0ChAGgAQ0ChAGCAaABoQGDAX4BfgGeAaEBgQF4AX4BfgGDAYEBnwGbAXgBeAGBAZ8BmwGfAQwCDAIDApsBCQIDAgwCDAIOAgkCngEJAg4CDgKhAZ4BmwEDAgkCCQJ4AZsBCQKeAXgBngF+AXgBDgIMAp8BnwGBAQ4CgQGhAQ4CgQGDAaEBkwGMAXsBewF/AZMBkwGxAaoBqgGMAZMBqgGxAQoCCgIGAqoBrQEGAgoCCgKzAa0BrQGzAZUBlQGPAa0BlQF/AXsBewGPAZUBjwF7AYwBjAGqAY8BqgGtAY8BqgEGAq0BkwF/AZUBlQGxAZMBlQGzAbEBswEKArEBiQGKAXsBewF6AYkBiQGnAagBqAGKAYkBBgKoAacBpwEFAgYCrwEGAgUCBQKuAa8BrwGuAZABkAGRAa8BegF7AZEBkQGQAXoBiQF6AZABkAGnAYkBkAGuAacBrgEFAqcBewF2AYUBhQGNAXsBhQGjAasBqwGNAYUBqwGjAQECAQIGAqsBAQKlAawBrAEGAgECrAGlAYcBhwGOAawBhwF2AXsBewGOAYcBhQF2AYcBhwGlAYUBpQGjAYUBpQEBAqMBmQF0AX0BfQGdAZkBdAFyAXkBeQF9AXQBeQFyAZcBlwGcAXkBnAGXAf0B/QEEApwBBAL9Af8B/wEIAgQC/wGZAZ0BnQEIAv8BmQH/Af0B/QF0AZkB/QGXAXQBlwFyAXQBmwGYAXMBcwF4AZsBeAFzAXUBdQF+AXgBngF+AXUBdQGaAZ4BmgEAAgkCCQKeAZoBAAL+AQMCAwIJAgACmAGbAQMCAwL+AZgBmAH+AQACAAJzAZgBAAKaAXMBmgF1AXMBpAGqAQYCBgICAqQBjAGqAaQBpAGGAYwBjAGGAXcBdwF7AYwBjwF7AXcBdwGIAY8BpgGtAY8BjwGIAaYBpgECAgYCBgKtAaYBiAF3AYYBhgGkAYgBpAGmAYgBpAECAqYBDAEOASwBLAEqAQwBDAEqASgBKAEKAQwBCgEoASkBKQELAQoBCwEpASsBKwENAQsBDwENASsBKwEtAQ8BLwERAQ8BDwEtAS8BLwExARMBEwERAS8BMQEwARIBEgETATEBMAEuARABEAESATABLAEOARABEAEuASwBDAEKAQsBCwENAQwBDQEOAQwBDQEPAQ4BDwEQAQ4BDwERARABEQETARABEwESARABKwEpASgBKAEqASsBKgEtASsBKgEsAS0BLAEvAS0BLAEuAS8BLgExAS8BLgEwATEBNAE2AVQBVAFSATQBNAFSAVABUAEyATQBMgFQAVEBUQEzATIBMwFRAVMBUwE1ATMBNwE1AVMBUwFVATcBVwE5ATcBNwFVAVcBVwFZATsBOwE5AVcBWQFYAToBOgE7AVkBWAFWATgBOAE6AVgBVAE2ATgBOAFWAVQBNAEyATMBMwE1ATQBNQE2ATQBNQE3ATYBNwE4ATYBNwE5ATgBOQE7ATgBOwE6ATgBUwFRAVABUAFSAVMBUgFVAVMBUgFUAVUBVAFXAVUBVAFWAVcBVgFZAVcBVgFYAVkB9QD3AGsBawFpAfUA9QBpAWcBZwHzAPUA8wBnAWYBZgHyAPMA8gBmAWgBaAH0APIA9ABoAWoBagH2APQA+AD2AGoBagFsAfgAbgH6APgA+ABsAW4BbgFwAfwA/AD6AG4BcAFxAf0A/QD8AHABcQFvAfsA+wD9AHEBbwFtAfkA+QD7AG8BawH3APkA+QBtAWsB8wDyAPQA9AD1APMA9AD2APUA9gD3APUA9gD4APcA+AD5APcA+AD6APkA+gD7APkA+gD8APsA/AD9APsAaAFmAWcBZwFqAWgBZwFpAWoBaQFsAWoBaQFrAWwBawFuAWwBawFtAW4BbQFwAW4BbQFvAXABbwFxAXABHgEcARgBGAEaAR4BGgEYARQBFAEWARoBFgEUARUBFQEXARYBGwEXARUBFQEZARsBHwEbARkBGQEdAR8BHQEhASMBIwEfAR0BIQElAScBJwEjASEBJQEkASYBJgEnASUBIAEiASYBJgEkASABHAEeASIBIgEgARwBJgEiAR4BHgEaASYBGgEnASYBGgEWAScBFgEjAScBFgEXASMBFwEfASMBFwEbAR8BHAEgASQBJAEYARwBJAElARgBJQEUARgBJQEhARQBIQEVARQBIQEdARUBHQEZARUBRgFEAUABQAFCAUYBQgFAATwBPAE+AUIBPgE8AT0BPQE/AT4BQwE/AT0BPQFBAUMBRwFDAUEBQQFFAUcBRQFJAUsBSwFHAUUBSQFNAU8BTwFLAUkBTQFMAU4BTgFPAU0BSAFKAU4BTgFMAUgBRAFGAUoBSgFIAUQBTgFKAUYBRgFCAU4BQgFPAU4BQgE+AU8BPgFLAU8BPgE/AUsBPwFHAUsBPwFDAUcBRAFIAUwBTAFAAUQBTAFNAUABTQE8AUABTQFJATwBSQE9ATwBSQFFAT0BRQFBAT0B", "i32": false}, "Cadeira - Assento Azul": {"cor": [35, 58, 92], "p": "J4VLP6Rw/T6TPgq+M4VLP6Rw/T7h6pE+HoVLP3E9Cj8aNDO+J4VLP3E9Cj+TPgq+J4VLPx+FCz+TPgq+M4VLPx+FCz/h6pE+HoVLP2ZmZj8aNDO+J4VLP2ZmZj+TPgq+I1yfP6Rw/T4wPwq+KVyfP6Rw/T6S6pE+HlyfP3E9Cj+3NDO+I1yfP3E9Cj8wPwq+I1yfPx+FCz8wPwq+KVyfPx+FCz+S6pE+HlyfP2ZmZj+3NDO+I1yfP2ZmZj8wPwq+", "i": "AAAIAAkACQABAAAADQAMAAQABAAFAA0ACwADAAQABAAMAAsADQAJAAgACAALAA0ACwAMAA0ADQAFAAEAAQAJAA0AAwAAAAEAAQAFAAMABQAEAAMACAAAAAMAAwALAAgACwAKAAIAAgADAAsADwAOAAYABgAHAA8ADgAGAAIAAgAKAA4ADgAKAAsACwAPAA4ACwADAAcABwAPAAsABwADAAIAAgAGAAcA", "i32": false}, "Cadeira - Estrutura": {"cor": [54, 60, 68], "p": "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", "i": "WgAkACIAIgA8AFoAJAAHAAQABAAiACQABgADAAQABAAHAAYAIwAhAAMAAwAGACMAWQA7ACEAIQAjAFkAcQA7AFkAWQBzAHEAjgBxAHMAcwCRAI4AkgCPAI4AjgCRAJIAdAByAI8AjwCSAHQAWgA8AHIAcgB0AFoAOwBxAI4AjgAhADsAjgCPACEAjwADACEAjwByAAMAcgAEAAMAcgA8AAQAPAAiAAQAkQBzAFkAWQAjAJEAIwCSAJEAIwAGAJIABgB0AJIABgAHAHQABwBaAHQABwAkAFoAlQCIAIcAhwCUAJUAZQCHAIgAiABmAGUALgBlAGYAZgAvAC4ACwAuAC8ALwAMAAsAAAALAAwADAABAAAADQAAAAEAAQAOAA0AMQAwAA0ADQAOADEAaABnADAAMAAxAGgAigCJAGcAZwBoAIoAigCVAJQAlACJAIoACwAAAA0ADQAuAAsADQAwAC4AMABlAC4AMABnAGUAZwCHAGUAZwCJAIcAiQCUAIcADgABAAwADAAxAA4ADAAvADEALwBoADEALwBmAGgAZgCKAGgAZgCIAIoAiACVAIoAswCtAIEAgQCNALMAWwCBAK0ArQCnAFsALQBbAKcApwChAC0ADwAtAKEAoQCbAA8ADwCbAJYAlgACAA8AAgCWAJwAnAAQAAIAogA6ABAAEACcAKIAqABkADoAOgCiAKgArgCGAGQAZACoAK4ArgCzAI0AjQCGAK4ADwACABAAEAAtAA8AEAA6AC0AOgBbAC0AOgBkAFsAZACBAFsAZACGAIEAhgCNAIEAnACWAJsAmwChAJwAoQCiAJwAoQCnAKIApwCoAKIApwCtAKgArQCuAKgArQCzAK4AjAB6AHkAeQCLAIwAXAB5AHoAegBdAFwAMgBcAF0AXQAzADIAGQAyADMAMwAaABkACQAZABoAGgAKAAkAHwAJAAoACgAgAB8ANQA0AB8AHwAgADUAXwBeADQANAA1AF8AgAB/AF4AXgBfAIAAgACMAIsAiwB/AIAAGQAJAB8AHwAyABkAHwA0ADIANABcADIANABeAFwAXgB5AFwAXgB/AHkAfwCLAHkAIAAKABoAGgA1ACAAGgAzADUAMwBfADUAMwBdAF8AXQCAAF8AXQB6AIAAegCMAIAAVgAqACYAJgBSAFYAKgAcABYAFgAmACoAGwAVABYAFgAcABsAKQAlABUAFQAbACkAVQBRACUAJQApAFUAaQBRAFUAVQBtAGkAdQBpAG0AbQB7AHUAfAB2AHUAdQB7AHwAbgBqAHYAdgB8AG4AVgBSAGoAagBuAFYAUQBpAHUAdQAlAFEAdQB2ACUAdgAVACUAdgBqABUAagAWABUAagBSABYAUgAmABYAewBtAFUAVQApAHsAKQB8AHsAKQAbAHwAGwBuAHwAGwAcAG4AHABWAG4AHAAqAFYAWAAsACgAKABUAFgALAAeABgAGAAoACwAHQAXABgAGAAeAB0AKwAnABcAFwAdACsAVwBTACcAJwArAFcAawBTAFcAVwBvAGsAdwBrAG8AbwB9AHcAfgB4AHcAdwB9AH4AcABsAHgAeAB+AHAAWABUAGwAbABwAFgAUwBrAHcAdwAnAFMAdwB4ACcAeAAXACcAeABsABcAbAAYABcAbABUABgAVAAoABgAfQBvAFcAVwArAH0AKwB+AH0AKwAdAH4AHQBwAH4AHQAeAHAAHgBYAHAAHgAsAFgAEwARAAUABQAIABMAEwA4ADYANgARABMAOABiAGAAYAA2ADgAYgCEAIIAggBgAGIAkACCAIQAhACTAJAAgwCQAJMAkwCFAIMAgwCFAGMAYwBhAIMAYQBjADkAOQA3AGEANwA5ABQAFAASADcACAAFABIAEgAUAAgAEgAFABEAEQA2ABIANgA3ABIANgBgADcAYABhADcAYACCAGEAggCDAGEAggCQAIMAEwAIABQAFAA4ABMAFAA5ADgAOQBiADgAOQBjAGIAYwCEAGIAYwCFAIQAhQCTAIQAVAEeARwBHAE2AVQBHgEBAf4A/gAcAR4BAAH9AP4A/gABAQABHQEbAf0A/QAAAR0BUwE1ARsBGwEdAVMBawE1AVMBUwFtAWsBiAFrAW0BbQGLAYgBjAGJAYgBiAGLAYwBbgFsAYkBiQGMAW4BVAE2AWwBbAFuAVQBNQFrAYgBiAEbATUBiAGJARsBiQH9ABsBiQFsAf0AbAH+AP0AbAE2Af4ANgEcAf4AiwFtAVMBUwEdAYsBHQGMAYsBHQEAAYwBAAFuAYwBAAEBAW4BAQFUAW4BAQEeAVQBjwGCAYEBgQGOAY8BXwGBAYIBggFgAV8BKAFfAWABYAEpASgBBQEoASkBKQEGAQUB+gAFAQYBBgH7APoABwH6APsA+wAIAQcBKwEqAQcBBwEIASsBYgFhASoBKgErAWIBhAGDAWEBYQFiAYQBhAGPAY4BjgGDAYQBBQH6AAcBBwEoAQUBBwEqASgBKgFfASgBKgFhAV8BYQGBAV8BYQGDAYEBgwGOAYEBCAH7AAYBBgErAQgBBgEpASsBKQFiASsBKQFgAWIBYAGEAWIBYAGCAYQBggGPAYQB+QD0AIABgAGHAfkAXgGAAfQA9ADuAF4BNAFeAe4A7gDoADQBCgE0AegA6ADiAAoBCgHiANwA3AD8AAoB/ADcAOEA4QAJAfwA5wAnAQkBCQHhAOcA7QBVAScBJwHnAO0A8wB7AVUBVQHtAPMA8wD5AIcBhwF7AfMACgH8AAkBCQE0AQoBCQEnATQBJwFeATQBJwFVAV4BVQGAAV4BVQF7AYABewGHAYAB4QDcAOIA4gDoAOEA6ADnAOEA6ADuAOcA7gDtAOcA7gD0AO0A9ADzAO0A9AD5APMAhgF0AXMBcwGFAYYBVgFzAXQBdAFXAVYBLAFWAVcBVwEtASwBEwEsAS0BLQEUARMBAwETARQBFAEEAQMBGQEDAQQBBAEaARkBLwEuARkBGQEaAS8BWQFYAS4BLgEvAVkBegF5AVgBWAFZAXoBegGGAYUBhQF5AXoBEwEDARkBGQEsARMBGQEuASwBLgFWASwBLgFYAVYBWAFzAVYBWAF5AXMBeQGFAXMBGgEEARQBFAEvARoBFAEtAS8BLQFZAS8BLQFXAVkBVwF6AVkBVwF0AXoBdAGGAXoBUAEkASABIAFMAVABJAEWARABEAEgASQBFQEPARABEAEWARUBIwEfAQ8BDwEVASMBTwFLAR8BHwEjAU8BYwFLAU8BTwFnAWMBbwFjAWcBZwF1AW8BdgFwAW8BbwF1AXYBaAFkAXABcAF2AWgBUAFMAWQBZAFoAVABSwFjAW8BbwEfAUsBbwFwAR8BcAEPAR8BcAFkAQ8BZAEQAQ8BZAFMARABTAEgARABdQFnAU8BTwEjAXUBIwF2AXUBIwEVAXYBFQFoAXYBFQEWAWgBFgFQAWgBFgEkAVABUgEmASIBIgFOAVIBJgEYARIBEgEiASYBFwERARIBEgEYARcBJQEhAREBEQEXASUBUQFNASEBIQElAVEBZQFNAVEBUQFpAWUBcQFlAWkBaQF3AXEBeAFyAXEBcQF3AXgBagFmAXIBcgF4AWoBUgFOAWYBZgFqAVIBTQFlAXEBcQEhAU0BcQFyASEBcgERASEBcgFmAREBZgESAREBZgFOARIBTgEiARIBdwFpAVEBUQElAXcBJQF4AXcBJQEXAXgBFwFqAXgBFwEYAWoBGAFSAWoBGAEmAVIBDQELAf8A/wACAQ0BDQEyATABMAELAQ0BMgFcAVoBWgEwATIBXAF+AXwBfAFaAVwBigF8AX4BfgGNAYoBfQGKAY0BjQF/AX0BfQF/AV0BXQFbAX0BWwFdATMBMwExAVsBMQEzAQ4BDgEMATEBAgH/AAwBDAEOAQIBDAH/AAsBCwEwAQwBMAExAQwBMAFaATEBWgFbATEBWgF8AVsBfAF9AVsBfAGKAX0BDQECAQ4BDgEyAQ0BDgEzATIBMwFcATIBMwFdAVwBXQF+AVwBXQF/AX4BfwGNAX4BQQBFAD8BPwE7AUEAQQA7ATcBNwE9AEEAPQA3ATgBOAE+AD0APgA4ATwBPAFCAD4ARgBCADwBPAFAAUYARAFKAEYARgBAAUQBRAFIAU4ATgBKAEQBSAFHAU0ATQBOAEgBRwFDAUkASQBNAEcBPwFFAEkASQBDAT8BQQA9AD4APgBCAEEAQgBFAEEAQgBGAEUARgBJAEUARgBKAEkASgBNAEkASgBOAE0APAE4ATcBNwE7ATwBOwFAATwBOwE/AUABPwFEAUABPwFDAUQBQwFIAUQBQwFHAUgBQwBHAEEBQQE9AUMAQwA9ATkBOQE/AEMAPwA5AToBOgFAAD8AQAA6AT4BPgFEAEAASABEAD4BPgFCAUgARgFMAEgASABCAUYBRgFKAVAAUABMAEYBSgFJAU8ATwBQAEoBSQFFAUsASwBPAEkBQQFHAEsASwBFAUEBQwA/AEAAQABEAEMARABHAEMARABIAEcASABLAEcASABMAEsATABPAEsATABQAE8APgE6ATkBOQE9AT4BPQFCAT4BPQFBAUIBQQFGAUIBQQFFAUYBRQFKAUYBRQFJAUoBwgDEAMcAxwDGAMIAvgDAAMQAxADCAL4AugC8AMAAwAC+ALoAvAC6ALYAtgC4ALwAuAC2ALQAtAC1ALgAuQC1ALQAtAC3ALkAvQC5ALcAtwC7AL0AwQC9ALsAuwC/AMEAvwDDAMUAxQDBAL8AwwDGAMcAxwDFAMMAxADAALwAvADHAMQAvAC4AMcAuADFAMcAuAC1AMUAtQDBAMUAtQC5AMEAuQC9AMEAugC+AMIAwgDGALoAxgC2ALoAxgDDALYAwwC0ALYAwwC/ALQAvwC3ALQAvwC7ALcA1gDYANsA2wDaANYA0gDUANgA2ADWANIAzgDQANQA1ADSAM4A0ADOAMoAygDMANAAzADKAMgAyADJAMwAzQDJAMgAyADLAM0A0QDNAMsAywDPANEA1QDRAM8AzwDTANUA0wDXANkA2QDVANMA1wDaANsA2wDZANcA2ADUANAA0ADbANgA0ADMANsAzADZANsAzADJANkAyQDVANkAyQDNANUAzQDRANUAzgDSANYA1gDaAM4A2gDKAM4A2gDXAMoA1wDIAMoA1wDTAMgA0wDLAMgA0wDPAMsApQCjAJ0AnQCfAKUAnwCdAJcAlwCZAJ8AmQCXAJgAmACaAJkAoACaAJgAmACeAKAApgCgAJ4AngCkAKYApACqAKwArACmAKQAqgCwALIAsgCsAKoAsACvALEAsQCyALAAqQCrALEAsQCvAKkAowClAKsAqwCpAKMAsQCrAKUApQCfALEAnwCyALEAnwCZALIAmQCsALIAmQCaAKwAmgCmAKwAmgCgAKYAowCpAK8ArwCdAKMArwCwAJ0AsACXAJ0AsACqAJcAqgCYAJcAqgCkAJgApACeAJgA6wDpAOMA4wDlAOsA5QDjAN0A3QDfAOUA3wDdAN4A3gDgAN8A5gDgAN4A3gDkAOYA7ADmAOQA5ADqAOwA6gDwAPIA8gDsAOoA8AD2APgA+ADyAPAA9gD1APcA9wD4APYA7wDxAPcA9wD1AO8A6QDrAPEA8QDvAOkA9wDxAOsA6wDlAPcA5QD4APcA5QDfAPgA3wDyAPgA3wDgAPIA4ADsAPIA4ADmAOwA6QDvAPUA9QDjAOkA9QD2AOMA9gDdAOMA9gDwAN0A8ADeAN0A8ADqAN4A6gDkAN4A", "i32": false}, "Cadeira - Apoios": {"cor": [38, 42, 48], "p": "Mn0/Pz0KNz+im5m9JH0/Pz0KNz+dhGs+Mn0/P+58Pz+im5m9JH0/P+58Pz+dhGs+M4NAP/YofD9Jhqu+R4NAP/YofD9pAYC+smRBP5dzeT86hqu+cWRBP5dzeT84AIC+smRBP1Xefj86hqu+cWRBP1Xefj84AIC+R7JDP/zGdz+Dhqu+B7JDP/zGdz+AAIC+R7JDP3hFgD+Dhqu+B7JDP3hFgD+AAIC+mItGP/zGdz/fhau+rItGP/zGdz8AAYC+mItGP3hFgD/fhau+rItGP3hFgD8AAYC+LtlIP5dzeT8ohqu+QdlIP5dzeT9IAYC+LtlIP1Xefj8ohqu+QdlIP1Xefj9IAYC+DPZIPz0K1z3C/v8+1vVIPz0K1z1xRyE/DPZIP7pJDD7C/v8+1vVIP7pJDD5xRyE/rLpJP/YofD8Zhqu+v7pJP/YofD85AYC+fcBKPz0KNz8PnZm9b8BKPz0KNz/ng2s+fcBKP+58Pz8PnZm9b8BKP+58Pz/ng2s+06OAPz0K1z1K/v8+uKOAPz0K1z00RyE/06OAP7pJDD5K/v8+uKOAP7pJDD40RyE/2HqEPz0K1z06/v8+vXqEPz0K1z0sRyE/2HqEP7pJDD46/v8+vXqEP7pJDD4sRyE/hb6fPz0KNz9JnZm9fr6fPz0KNz/Kg2s+hb6fP+58Pz9JnZm9fr6fP+58Pz/Kg2s+hkGgP/YofD+yhqu+kEGgP/YofD/TAYC+7qOgPz0K1z1p/v8+06OgPz0K1z1ERyE/7qOgP7pJDD5p/v8+06OgP7pJDD5ERyE/RbKgP5dzeT+khqu+JbKgP5dzeT+iAIC+RbKgP1Xefj+khqu+JbKgP1Xefj+iAIC+ENmhP/zGdz/shqu+8NihP/zGdz/qAIC+ENmhP3hFgD/shqu+8NihP3hFgD/qAIC+uEWjP/zGdz9Jhqu+wkWjP/zGdz9pAYC+uEWjP3hFgD9Jhqu+wkWjP3hFgD9pAYC+g2ykP5dzeT+Rhqu+jWykP5dzeT+xAYC+g2ykP1Xefj+Rhqu+jWykP1Xefj+xAYC+Qt2kP/YofD+Dhqu+TN2kP/YofD+jAYC+K2ClPz0KNz+2npm9JGClPz0KNz8Ug2s+K2ClP+58Pz+2npm9JGClP+58Pz8Ug2s+", "i": "AAAcAB0AHQABAAAAHwAeAAIAAgADAB8AHAAAAAIAAgAeABwAHwAdABwAHAAeAB8AHwADAAEAAQAdAB8AAgAAAAEAAQADAAIABAAGAAcABwAFAAQABgAKAAsACwAHAAYACgAOAA8ADwALAAoADgASABMAEwAPAA4AGwATABIAEgAaABsAFQAbABoAGgAUABUAFQAUABAAEAARABUAEQAQAAwADAANABEADQAMAAgACAAJAA0ACAAEAAUABQAJAAgACQAFAAcABwANAAkABwALAA0ACwARAA0ACwAPABEADwAVABEADwATABUAEwAbABUABgAEAAgACAAKAAYACAAMAAoADAAOAAoADAAQAA4AEAASAA4AEAAUABIAFAAaABIAKABEAEUARQApACgARwBGACoAKgArAEcARAAoACoAKgBGAEQARwBFAEQARABGAEcARwArACkAKQBFAEcAKgAoACkAKQArACoALAAyADMAMwAtACwAMgA2ADcANwAzADIANgA6ADsAOwA3ADYAOgA+AD8APwA7ADoAQwA/AD4APgBCAEMAQQBDAEIAQgBAAEEAQQBAADwAPAA9AEEAPQA8ADgAOAA5AD0AOQA4ADQANAA1ADkANAAsAC0ALQA1ADQANQAtADMAMwA5ADUAMwA3ADkANwA9ADkANwA7AD0AOwBBAD0AOwA/AEEAPwBDAEEAMgAsADQANAA2ADIANAA4ADYAOAA6ADYAOAA8ADoAPAA+ADoAPABAAD4AQABCAD4AFgAgACEAIQAXABYAIwAiABgAGAAZACMAIAAWABgAGAAiACAAIwAhACAAIAAiACMAIwAZABcAFwAhACMAGAAWABcAFwAZABgAJAAuAC8ALwAlACQAMQAwACYAJgAnADEALgAkACYAJgAwAC4AMQAvAC4ALgAwADEAMQAnACUAJQAvADEAJgAkACUAJQAnACYA", "i32": false}}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/lights/RectAreaLightUniformsLib.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const reduz=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const celular=Math.min(window.innerWidth,window.innerHeight)<700;
+const canvas=$('cena');
+
+/* =============== nome do município =============== */
+let cidade=(()=>{try{return decodeURIComponent((location.hash||'').slice(1)).replace(/[-_.]+/g,' ').trim();}catch(e){return '';}})();
+const nomeExibido=()=>(cidade||'Seu Município').toUpperCase();
+
+/* =============== cartela de ACM (Bold, mostruário 2025) ===============
+   nome, código da chapa, tom aproximado para a tela, acabamento                     */
+const CORES=[
+  ['Bordô Fosco','BD222F','#560c22','fosco'],['Preto Fosco','PT001F','#1b1c1e','fosco'],['Branco Fosco','BR404F','#ebeae5','fosco'],
+  ['Vermelho Fosco','VM185F','#c4122f','fosco'],['Laranja Fosco','LA150F','#ef8a24','fosco'],['Amarelo Fosco','AM115F','#f3cd22','fosco'],
+  ['Verde Fosco','VE340F','#00865a','fosco'],['Verde Escuro FSC','VE342F','#0d5c40','fosco'],['Azul Fosco','AZ275F','#1f4a9b','fosco'],
+  ['Azul GM Fosco','AZ2387F','#0b69b4','fosco'],['Azul Marinho','AZ280FK','#13296a','fosco'],['Bege Fosco','BG7527F','#cbc5b4','fosco'],
+  ['Marrom Café Fosco','MR7533F','#4a382c','fosco'],['Cinza RAL 7037','CZ7037F','#7c7e7c','fosco'],['Cinza Anthracite','CZ433U','#3a3f44','fosco'],
+  ['Preto Brilho','PT001B','#0d0e10','brilho'],['Branco Brilho','BR404B','#f3f3f0','brilho'],['Vermelho Brilho','VM185B','#cc1131','brilho'],
+  ['Laranja Brilho','LA150B','#f2871f','brilho'],['Amarelo Brilho','AM115B','#f6cf1c','brilho'],['Verde Brilho','VE340B','#008e5e','brilho'],
+  ['Azul Brilho','AZ275B','#1d4fa6','brilho'],['Verde Turquesa','VE3285C','#00958a','brilho'],['Rosa Brilho','RS675B','#b2246d','brilho'],
+  ['Roxo Brilho','RX269B','#522f71','brilho'],
+  ['Prata Metálico','PR880F','#a6a9ac','metalico'],['Prata RAL 9006','PR9006FK','#a4a7a5','metalico'],['Smoke Silver','SS007FK','#8d9195','metalico'],
+  ['Grafite Metálico','GR430F','#5d6266','metalico'],['Dark Grey Metálico','DGR001FK','#43474b','metalico'],['Champagne Dourado','CHD870F','#b79f79','metalico'],
+  ['Dourado Metálico','DR871F','#9f8750','metalico'],['Bright Bronze Metálico','BZ001','#896643','metalico'],['Bronze 1003','BZ1003FK','#5c4939','metalico']
+].map(([nome,cod,hex,acab])=>({nome,cod,hex,acab}));
+const sel={acm:CORES.find(c=>c.cod==='BD222F'),estrutura:CORES.find(c=>c.cod==='PT001B')};
+function luminancia(hex){const n=parseInt(hex.slice(1),16),f=v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4);};return .2126*f(n>>16)+.7152*f((n>>8)&255)+.0722*f(n&255);}
+const corTextoPlaca=()=>luminancia(sel.acm.hex)>0.35?'#1b1c1e':'#ffffff';
+function misturaHex(hex,alvo,t){const a=parseInt(hex.slice(1),16),b=parseInt(alvo.slice(1),16);const m=(x,y)=>Math.round(x+(y-x)*t);return 'rgb('+m(a>>16,b>>16)+','+m((a>>8)&255,(b>>8)&255)+','+m(a&255,b&255)+')';}
+function fundoAmostra(c){
+  if(c.acab==='metalico')return `linear-gradient(135deg,${misturaHex(c.hex,'#ffffff',.45)} 0%,${c.hex} 48%,${misturaHex(c.hex,'#000000',.35)} 100%)`;
+  if(c.acab==='brilho')return `radial-gradient(circle at 32% 28%,rgba(255,255,255,.6) 0 14%,rgba(255,255,255,0) 42%),${c.hex}`;
+  return c.hex;
+}
+function atualizaDesenhosCor(){
+  document.querySelectorAll('#dFrente [fill], #dLado [fill]').forEach(e=>{
+    if(!e.dataset.f0)e.dataset.f0=e.getAttribute('fill');
+    const f=e.dataset.f0;
+    if(f==='#6a1a2e')e.setAttribute('fill',sel.acm.hex);
+    else if(f==='#fff'&&e.tagName==='text')e.setAttribute('fill',corTextoPlaca());
+    else if((f==='#1d222b'||f==='#2a2e35')&&e.tagName==='rect')e.setAttribute('fill',sel.estrutura.hex);
+  });
+}
+
+/* =============== desenhos técnicos (SVG) =============== */
+desenhos();
+
+if(!window.THREE){ $('palco').style.background='#121722'; return; }
+const T=THREE;
+
+/* =============== medidas do projeto (metros) ===============
+   x: frente da parada, da esquerda (-) para a direita (+) de quem olha da rua
+   y: altura · z: profundidade, rua = +z, fundo = -z                     */
+const L=3.0, HX=1.5, PE=0.07;
+const zPF=0.5, zPT=-0.5;              // faces externas dos pés (frente / fundo)
+const CAI=0.10, ANG=Math.atan(CAI);   // caimento 10% para trás
+const zCobT=-0.503, zCobF=0.977;      // quadro da cobertura
+const yR=z=>2.25+CAI*(z-zCobT);       // topo das terças = apoio do policarbonato
+const pX=HX-PE/2, pZ=zPF-PE/2;        // centro dos pés
+const yPlat0=2.15, yPlat1=2.49, xPlat=1.523, zPlatF=1.0, zPlatT=-0.606;
+const bancoX0=-1.43, bancoX1=0.62;
+
+/* =============== renderer / cena =============== */
+const renderer=new T.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
+const DPR=Math.min(window.devicePixelRatio||1,celular?1.6:2);
+renderer.setPixelRatio(DPR);
+const ext=renderer.extensions;
+const podeHDR=renderer.capabilities.isWebGL2?ext.has('EXT_color_buffer_float'):(ext.has('OES_texture_half_float')&&ext.has('EXT_color_buffer_half_float'));
+const usaPos=!!(podeHDR&&T.EffectComposer&&T.RenderPass&&T.ShaderPass&&T.UnrealBloomPass&&T.CopyShader&&T.LuminosityHighPassShader);
+if(usaPos){renderer.outputEncoding=T.LinearEncoding;renderer.toneMapping=T.NoToneMapping;}
+else{renderer.outputEncoding=T.sRGBEncoding;renderer.toneMapping=T.ACESFilmicToneMapping;}
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=T.PCFSoftShadowMap;
+
+const scene=new T.Scene();
+const pmrem=new T.PMREMGenerator(renderer);
+if(T.RectAreaLightUniformsLib) T.RectAreaLightUniformsLib.init();
+const lin=h=>new T.Color(h).convertSRGBToLinear();
+
+/* céu de verdade (cúpula com degradê, sol e horizonte) */
+const ceuVert='varying vec3 vDir;void main(){vDir=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}';
+const ceuFrag=`uniform vec3 topo;uniform vec3 horiz;uniform vec3 baixo;uniform vec3 solCor;uniform vec3 solDir;uniform float solForca;uniform vec3 cidadeCor;varying vec3 vDir;
+void main(){vec3 d=normalize(vDir);float h=d.y;
+vec3 c=h>0.?mix(horiz,topo,pow(clamp(h,0.,1.),.45)):mix(horiz,baixo,pow(clamp(-h*5.,0.,1.),.7));
+float s=max(dot(d,normalize(solDir)),0.);c+=solCor*solForca*(pow(s,1200.)*40.+pow(s,30.)*.4+pow(s,4.)*.07);c+=cidadeCor*exp(-abs(h)*16.);
+gl_FragColor=vec4(c,1.);
+#include <tonemapping_fragment>
+#include <encodings_fragment>
+}`;
+function novoCeu(raio){
+  const u={topo:{value:new T.Color()},horiz:{value:new T.Color()},baixo:{value:new T.Color()},solCor:{value:new T.Color()},solDir:{value:new T.Vector3(0.5,0.55,0.62)},solForca:{value:1},cidadeCor:{value:new T.Color(0,0,0)}};
+  const m=new T.Mesh(new T.SphereGeometry(raio,48,24),new T.ShaderMaterial({uniforms:u,vertexShader:ceuVert,fragmentShader:ceuFrag,side:T.BackSide,depthWrite:false,fog:false}));
+  m.renderOrder=-10;m.frustumCulled=false;return {m,u};
+}
+const corCidade=lin('#4a3624');
+const CEU={dia:{topo:lin('#5d88b8'),horiz:lin('#dbe3e8'),baixo:lin('#8f8a80'),sol:lin('#fff0d6')},
+           noite:{topo:lin('#010207'),horiz:lin('#111a2e'),baixo:lin('#05070b'),sol:lin('#000000')}};
+function pintaCeu(u,n){
+  u.topo.value.copy(CEU.dia.topo).lerp(CEU.noite.topo,n);u.horiz.value.copy(CEU.dia.horiz).lerp(CEU.noite.horiz,n);
+  u.baixo.value.copy(CEU.dia.baixo).lerp(CEU.noite.baixo,n);u.solCor.value.copy(CEU.dia.sol);u.solForca.value=Math.max(0,1-n*1.5);u.cidadeCor.value.copy(corCidade).multiplyScalar(n);
+}
+const ceu=novoCeu(420);scene.add(ceu.m);pintaCeu(ceu.u,0);
+// mapas de reflexo: o aço, o vidro e o policarbonato refletem o céu do dia ou a noite com as luzes da cidade
+function mapaAmbiente(n){
+  const cena=new T.Scene();const c=novoCeu(60);pintaCeu(c.u,n);cena.add(c.m);
+  const chaoE=new T.Mesh(new T.CircleGeometry(50,32),new T.MeshBasicMaterial({color:n<.5?lin('#9d988c'):lin('#08090c')}));chaoE.rotation.x=-Math.PI/2;chaoE.position.y=-1.5;cena.add(chaoE);
+  if(n<.5){const nuvem=new T.Mesh(new T.SphereGeometry(6,16,10),new T.MeshBasicMaterial({color:new T.Color(1.6,1.6,1.65)}));nuvem.position.set(-30,22,-18);cena.add(nuvem);}
+  return pmrem.fromScene(cena,0,0.1,200).texture;
+}
+const envDia=mapaAmbiente(0), envNoite=mapaAmbiente(1);
+scene.environment=envDia;
+scene.fog=new T.FogExp2(CEU.dia.horiz.clone(),0.012);
+
+const camera=new T.PerspectiveCamera(35,1,0.15,600);
+
+/* pós-processamento: brilho (bloom) do LED e das luzes da cidade, tom de cinema e vinheta */
+let composer=null,bloom=null,passeFinal=null;
+if(usaPos){
+  const opc={type:T.HalfFloatType,format:T.RGBAFormat,encoding:T.LinearEncoding,minFilter:T.LinearFilter,magFilter:T.LinearFilter};
+  const rt=(renderer.capabilities.isWebGL2&&T.WebGLMultisampleRenderTarget)?new T.WebGLMultisampleRenderTarget(4,4,opc):new T.WebGLRenderTarget(4,4,opc);
+  composer=new T.EffectComposer(renderer,rt);
+  composer.addPass(new T.RenderPass(scene,camera));
+  bloom=new T.UnrealBloomPass(new T.Vector2(256,256),0,0.55,0.95);composer.addPass(bloom);
+  passeFinal=new T.ShaderPass({uniforms:{tDiffuse:{value:null},exposicao:{value:1},vinheta:{value:.3}},
+    vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+    fragmentShader:`uniform sampler2D tDiffuse;uniform float exposicao;uniform float vinheta;varying vec2 vUv;
+vec3 fit(vec3 v){vec3 a=v*(v+0.0245786)-0.000090537;vec3 b=v*(0.983729*v+0.4329510)+0.238081;return a/b;}
+vec3 aces(vec3 c){const mat3 I=mat3(vec3(0.59719,0.07600,0.02840),vec3(0.35458,0.90834,0.13383),vec3(0.04823,0.01566,0.83777));
+const mat3 O=mat3(vec3(1.60475,-0.10208,-0.00327),vec3(-0.53108,1.10813,-0.07276),vec3(-0.07367,-0.00605,1.07602));
+c*=exposicao/0.6;c=I*c;c=fit(c);c=O*c;return clamp(c,0.,1.);}
+float rnd(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
+void main(){vec3 c=aces(texture2D(tDiffuse,vUv).rgb);vec2 d=vUv-.5;c*=1.-dot(d,d)*vinheta;
+c=mix(pow(c,vec3(1./2.4))*1.055-.055,c*12.92,step(c,vec3(.0031308)));c+=(rnd(gl_FragCoord.xy)-.5)/255.;gl_FragColor=vec4(c,1.);}`});
+  composer.addPass(passeFinal);
+}
+
+/* luzes */
+const hemi=new T.HemisphereLight(lin('#d6e4f2'),lin('#8a8270'),0.35);scene.add(hemi);
+const sol=new T.DirectionalLight(lin('#fff1dc'),2.6);
+sol.position.set(5,7,6.2);sol.castShadow=true;
+sol.shadow.mapSize.set(celular?1024:2048,celular?1024:2048);
+Object.assign(sol.shadow.camera,{left:-4.5,right:4.5,top:4.5,bottom:-4.5,near:1,far:30});
+sol.shadow.bias=-0.0008;sol.shadow.normalBias=0.035;
+scene.add(sol,sol.target);
+const lua=new T.DirectionalLight(lin('#7f9ccf'),0);lua.position.set(-5,7,-3);scene.add(lua);
+const poste=new T.DirectionalLight(lin('#ffe2c2'),0);poste.position.set(3.5,4.5,9);scene.add(poste);
+const ledArea=T.RectAreaLight?new T.RectAreaLight(lin('#fff1de'),0,2.0,0.05):null;
+const zLed=0.237;
+if(ledArea){ledArea.position.set(0,2.27,zLed);ledArea.lookAt(0,0,zLed);scene.add(ledArea);}
+const ledSpot=new T.SpotLight(lin('#fff1de'),0,8,Math.PI/2.2,0.85,1.6);
+ledSpot.position.set(0,2.26,zLed);ledSpot.target.position.set(0,0,zLed-0.05);
+ledSpot.castShadow=true;ledSpot.shadow.mapSize.set(celular?512:1024,celular?512:1024);ledSpot.shadow.bias=-0.0006;
+scene.add(ledSpot,ledSpot.target);
+
+/* =============== texturas de canvas =============== */
+function cv(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c;}
+function texDe(c,srgb=true){const t=new T.CanvasTexture(c);if(srgb)t.encoding=T.sRGBEncoding;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return t;}
+function ruido(ctx,w,h,qtd,alpha,cores){for(let i=0;i<qtd;i++){ctx.fillStyle=cores[(Math.random()*cores.length)|0];ctx.globalAlpha=Math.random()*alpha;ctx.fillRect(Math.random()*w,Math.random()*h,1+Math.random()*2,1+Math.random()*2);}ctx.globalAlpha=1;}
+
+// granulação rápida direto nos pixels (bem mais leve que desenhar ponto a ponto)
+function granula(g,x0,y0,w,h,amp,pinta,ampPinta){
+  if(w<=0||h<=0)return;const img=g.getImageData(x0,y0,w,h),d=img.data;
+  for(let i=0;i<d.length;i+=4){let v=(Math.random()-.5)*amp;if(pinta&&Math.random()<pinta)v+=(Math.random()<.5?-1:1)*ampPinta;d[i]+=v;d[i+1]+=v;d[i+2]+=v;}
+  g.putImageData(img,x0,y0);
+}
+// mapa de relevo (normal) a partir de um canvas de alturas
+function normalDe(alt,forca){
+  const w=alt.width,h=alt.height,src=alt.getContext('2d').getImageData(0,0,w,h).data;
+  const c=cv(w,h),g=c.getContext('2d'),img=g.createImageData(w,h),d=img.data;
+  const k=forca/255;
+  for(let y=0;y<h;y++){const ya=((y-1+h)%h)*w,yb=((y+1)%h)*w,yc=y*w;for(let x=0;x<w;x++){
+    const xa=(x-1+w)%w,xb=(x+1)%w;
+    const dx=(src[(yc+xb)*4]-src[(yc+xa)*4])*k,dy=(src[(yb+x)*4]-src[(ya+x)*4])*k;
+    const l=Math.hypot(dx,dy,1),i=(y*w+x)*4;
+    d[i]=(-dx/l*.5+.5)*255;d[i+1]=(dy/l*.5+.5)*255;d[i+2]=(1/l*.5+.5)*255;d[i+3]=255;
+  }}
+  g.putImageData(img,0,0);const t=texDe(c,false);t.wrapS=t.wrapT=T.RepeatWrapping;return t;
+}
+// calçada: placas de concreto 1,00 × 0,50 m e faixa de piso intertravado junto ao meio-fio (tile de 4,00 × 4,05 m)
+function texCalcada(){
+  const px=celular?160:240,W=4*px,H=Math.round(4.05*px);
+  const c=cv(W,H),g=c.getContext('2d'),a=cv(W,H),ga=a.getContext('2d');
+  g.fillStyle='#b9b5ad';g.fillRect(0,0,W,H);ga.fillStyle='#fff';ga.fillRect(0,0,W,H);
+  const zPav=3.55*px; // placas até 3,55 m, depois 0,50 m de intertravado
+  for(let y=0;y<zPav;y+=px*0.5){for(let x=0;x<W;x+=px){
+    const v=(Math.random()-.5)*14;g.fillStyle=`rgb(${185+v},${181+v},${172+v})`;g.fillRect(x+2,y+2,px-4,px*0.5-4);}}
+  granula(g,0,0,W,Math.round(zPav),22,.02,30);
+  // manchas suaves
+  for(let i=0;i<40;i++){const rg=g.createRadialGradient(Math.random()*W,Math.random()*zPav,0,0,0,0);g.globalAlpha=.05;g.fillStyle=Math.random()<.5?'#7c776f':'#e2ded6';g.beginPath();g.arc(Math.random()*W,Math.random()*zPav,px*(.2+Math.random()*.6),0,7);g.fill();}g.globalAlpha=1;
+  ga.strokeStyle='#000';ga.lineWidth=3;
+  for(let y=0;y<=zPav;y+=px*0.5){ga.beginPath();ga.moveTo(0,y);ga.lineTo(W,y);ga.stroke();}
+  for(let x=0;x<=W;x+=px){ga.beginPath();ga.moveTo(x,0);ga.lineTo(x,zPav);ga.stroke();}
+  g.strokeStyle='rgba(95,92,86,.7)';g.lineWidth=2;
+  for(let y=0;y<=zPav;y+=px*0.5){g.beginPath();g.moveTo(0,y);g.lineTo(W,y);g.stroke();}
+  for(let x=0;x<=W;x+=px){g.beginPath();g.moveTo(x,0);g.lineTo(x,zPav);g.stroke();}
+  // intertravado 0,20 × 0,10 m
+  const bw=px*0.2,bh=px*0.1;
+  for(let y=zPav,lin_=0;y<H;y+=bh,lin_++){for(let x=(lin_%2)*bw/2-bw;x<W;x+=bw){
+    const v=(Math.random()-.5)*20;g.fillStyle=`rgb(${120+v},${116+v},${110+v})`;g.fillRect(x+1.5,y+1.5,bw-3,bh-3);
+    ga.fillStyle='#000';ga.fillRect(x,y,bw,1.5);ga.fillRect(x,y,1.5,bh);}}
+  granula(g,0,Math.round(zPav),W,H-Math.round(zPav),18,.02,25);
+  const t=texDe(c);t.wrapS=t.wrapT=T.RepeatWrapping;
+  return {map:t,normal:normalDe(a,2.2)};
+}
+function texAsfalto(){
+  const N=celular?512:1024;const c=cv(N,N),g=c.getContext('2d'),a=cv(N,N),ga=a.getContext('2d');
+  g.fillStyle='#3a3c40';g.fillRect(0,0,N,N);
+  for(let i=0;i<14;i++){g.globalAlpha=.07;g.fillStyle=Math.random()<.5?'#1f2124':'#55575b';g.beginPath();g.arc(Math.random()*N,Math.random()*N,N*(.05+Math.random()*.12),0,7);g.fill();}g.globalAlpha=1;
+  const img=g.getImageData(0,0,N,N),d=img.data,ia=ga.createImageData(N,N),da=ia.data;
+  for(let i=0;i<d.length;i+=4){let v=(Math.random()-.5)*26;const r=Math.random();if(r<.05)v+=34;else if(r<.1)v-=22;d[i]+=v;d[i+1]+=v;d[i+2]+=v;const hgt=128+v*2.2;da[i]=da[i+1]=da[i+2]=hgt;da[i+3]=255;}
+  g.putImageData(img,0,0);ga.putImageData(ia,0,0);
+  const t=texDe(c);t.wrapS=t.wrapT=T.RepeatWrapping;return {map:t,normal:normalDe(a,1.2)};
+}
+function texGrama(){
+  const N=256;const c=cv(N,N),g=c.getContext('2d'),img=g.createImageData(N,N),d=img.data;
+  for(let i=0;i<d.length;i+=4){const r=Math.random(),v=(Math.random()-.5)*30;const b=r<.25?[77,88,56]:r<.5?[115,128,82]:r<.75?[104,97,63]:[87,101,61];d[i]=b[0]+v;d[i+1]=b[1]+v;d[i+2]=b[2]+v;d[i+3]=255;}
+  g.putImageData(img,0,0);const t=texDe(c);t.wrapS=t.wrapT=T.RepeatWrapping;return t;
+}
+// madeira plástica: veios contínuos, variação de cor e leve relevo
+function texMadeira(semente){
+  const W=celular?1024:2048,H=96;const c=cv(W,H),g=c.getContext('2d'),img=g.createImageData(W,H),d=img.data;
+  const a=cv(W,H),ga=a.getContext('2d'),ia=ga.createImageData(W,H),da=ia.data;
+  const r1=Math.random()*10+semente,r2=Math.random()*10;
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    const xx=x/W*2048;
+    const veio=Math.sin((y*0.42+Math.sin(xx*0.0035+r1)*7+Math.sin(xx*0.011+r2)*2.4)*1.0);
+    const fino=Math.sin(y*2.1+Math.sin(xx*0.05+r1)*1.5)*0.5;
+    const ruid=(Math.random()-.5)*0.18;
+    let t=0.5+veio*0.22+fino*0.08+ruid+Math.sin(xx*0.0012+r2)*0.08;
+    t=Math.min(1,Math.max(0,t));
+    const i=(y*W+x)*4;
+    d[i]=78+t*86;d[i+1]=48+t*58;d[i+2]=28+t*34;d[i+3]=255;
+    const hgt=0.5+veio*0.25+fino*0.15;da[i]=da[i+1]=da[i+2]=hgt*255;da[i+3]=255;
+  }
+  g.putImageData(img,0,0);ga.putImageData(ia,0,0);
+  return {map:texDe(c),normal:normalDe(a,1.6)};
+}
+// células do painel solar
+function texSolar(){
+  const c=cv(512,600),g=c.getContext('2d');
+  g.fillStyle='#0d1830';g.fillRect(0,0,512,600);
+  const cw=512/6,ch=600/10;
+  for(let i=0;i<6;i++)for(let j=0;j<10;j++){const x=i*cw+3,y=j*ch+3;const gr=g.createLinearGradient(x,y,x+cw,y+ch);gr.addColorStop(0,'#1a2c52');gr.addColorStop(1,'#0e1a34');g.fillStyle=gr;g.fillRect(x,y,cw-6,ch-6);
+    g.strokeStyle='rgba(170,190,220,.35)';g.lineWidth=1;for(let k=1;k<3;k++){g.beginPath();g.moveTo(x+k*(cw-6)/3,y);g.lineTo(x+k*(cw-6)/3,y+ch-6);g.stroke();}}
+  return texDe(c);
+}
+// pictograma de acessibilidade no piso
+function texPCD(){
+  const c=cv(512,768),g=c.getContext('2d');
+  g.fillStyle='#1f5fae';g.fillRect(0,0,512,768);
+  g.strokeStyle='#fff';g.lineWidth=14;g.strokeRect(14,14,484,740);
+  g.save();g.translate(256,384);g.scale(1.25,1.25);g.fillStyle='#fff';g.strokeStyle='#fff';g.lineCap='round';g.lineJoin='round';
+  g.beginPath();g.arc(-6,-118,22,0,Math.PI*2);g.fill();
+  g.lineWidth=26;g.beginPath();g.moveTo(-12,-82);g.lineTo(-22,6);g.lineTo(52,6);g.lineTo(80,84);g.stroke();
+  g.lineWidth=22;g.beginPath();g.moveTo(-16,-40);g.lineTo(38,-40);g.stroke();
+  g.lineWidth=20;g.beginPath();g.arc(-20,38,70,Math.PI*0.08,Math.PI*1.32);g.stroke();
+  g.restore();
+  return texDe(c);
+}
+// brasão genérico (escudo) — não usa o brasão real de nenhuma cidade
+function escudo(g,x,y,s,cor){
+  g.save();g.translate(x,y);g.scale(s,s);g.strokeStyle=cor;g.fillStyle=cor;g.lineWidth=7;g.lineJoin='round';
+  g.beginPath();g.moveTo(-40,-40);g.lineTo(40,-40);g.lineTo(40,8);g.quadraticCurveTo(40,42,0,56);g.quadraticCurveTo(-40,42,-40,8);g.closePath();g.stroke();
+  g.lineWidth=5;g.beginPath();g.moveTo(-40,0);g.lineTo(40,0);g.moveTo(0,-40);g.lineTo(0,52);g.stroke();
+  for(let i=0;i<4;i++){g.fillRect(-34+i*20,-62,12,15);} g.fillRect(-36,-50,72,6);
+  g.restore();
+}
+const fonteD='"Barlow Condensed","Arial Narrow",sans-serif';
+const placaC=cv(2400,300), placaT=texDe(placaC);
+const ladoEC=cv(280,1008), ladoET=texDe(ladoEC);
+const ladoDC=cv(280,1008), ladoDT=texDe(ladoDC);
+function desenhaLado(cnv,cor){
+  const nome=nomeExibido();const g=cnv.getContext('2d');g.clearRect(0,0,280,1008);
+  g.save();g.translate(140,504);g.rotate(-Math.PI/2);g.fillStyle=cor;g.textAlign='center';
+  let t2=190;g.font=`800 ${t2}px ${fonteD}`;while(g.measureText(nome).width>970&&t2>40){t2-=4;g.font=`800 ${t2}px ${fonteD}`;}
+  g.fillText(nome,0,30+t2*0.5);
+  let t1=70;g.font=`600 ${t1}px ${fonteD}`;while(g.measureText('GOVERNO MUNICIPAL DE').width>970&&t1>30){t1-=2;g.font=`600 ${t1}px ${fonteD}`;}
+  g.fillText('GOVERNO MUNICIPAL DE',0,-t2*0.42);
+  g.restore();
+}
+function desenhaArte(){
+  const nome=nomeExibido();
+  const g=placaC.getContext('2d');g.clearRect(0,0,2400,300);
+  let tam=196;g.font=`800 ${tam}px ${fonteD}`;
+  while(g.measureText(nome).width>1900&&tam>70){tam-=4;g.font=`800 ${tam}px ${fonteD}`;}
+  const wNome=g.measureText(nome).width;
+  g.font=`600 66px ${fonteD}`;const wTopo=g.measureText('GOVERNO MUNICIPAL DE').width;
+  const w=Math.max(wNome,wTopo), bloco=w+250, x0=1200-bloco/2;
+  const tf=corTextoPlaca();
+  escudo(g,x0+95,158,2.25,tf);
+  g.fillStyle=tf;g.font=`600 66px ${fonteD}`;g.fillText('GOVERNO MUNICIPAL DE',x0+240,92);
+  g.font=`800 ${tam}px ${fonteD}`;g.fillText(nome,x0+232,92+tam*0.93);
+  placaT.needsUpdate=true;
+  desenhaLado(ladoEC,sel.acm.hex);ladoET.needsUpdate=true;
+  desenhaLado(ladoDC,'rgba(255,255,255,.96)');ladoDT.needsUpdate=true;
+}
+desenhaArte();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(desenhaArte);
+
+/* =============== materiais =============== */
+const env=1;
+const M={
+  aco:new T.MeshPhysicalMaterial({color:'#060607',metalness:.3,roughness:.34,clearcoat:1,clearcoatRoughness:.07,envMapIntensity:1}),
+  galv:new T.MeshStandardMaterial({color:'#c3c8cd',metalness:.9,roughness:.3}),
+  galvEsc:new T.MeshStandardMaterial({color:'#8d939a',metalness:.8,roughness:.45}),
+  concreto:new T.MeshStandardMaterial({color:'#8e8a83',roughness:.95}),
+  terra:new T.MeshStandardMaterial({color:'#6b5642',roughness:1,transparent:true,opacity:.0}),
+  madeira:new T.MeshStandardMaterial({color:'#7a5536',roughness:.6}),
+  fume:new T.MeshPhysicalMaterial({color:'#262a31',metalness:0,roughness:.04,transparent:true,opacity:.72,side:T.DoubleSide,depthWrite:false,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:1.1}),
+  cristal:new T.MeshPhysicalMaterial({color:'#7d8c91',metalness:0,roughness:.02,transparent:true,opacity:.1,side:T.DoubleSide,depthWrite:false,clearcoat:1,clearcoatRoughness:.01,envMapIntensity:1.6}),
+  borda:new T.LineBasicMaterial({color:'#9fb2bf',transparent:true,opacity:.55}),
+  acm:new T.MeshPhysicalMaterial({color:'#5a0d22',metalness:.1,roughness:.5,clearcoat:.35,clearcoatRoughness:.35,envMapIntensity:.55}),
+  acmVerso:new T.MeshStandardMaterial({color:'#4a4d53',metalness:.2,roughness:.65,envMapIntensity:.3}),
+  vinil:new T.MeshStandardMaterial({map:placaT,transparent:true,roughness:.45,emissive:'#ffffff',emissiveMap:placaT,emissiveIntensity:0,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2}),
+  vinilE:new T.MeshStandardMaterial({map:ladoET,transparent:true,roughness:.45,depthWrite:false,side:T.DoubleSide,polygonOffset:true,polygonOffsetFactor:-2}),
+  vinilD:new T.MeshStandardMaterial({map:ladoDT,transparent:true,roughness:.45,depthWrite:false,side:T.DoubleSide,polygonOffset:true,polygonOffsetFactor:-2}),
+  pvc:new T.MeshStandardMaterial({color:'#d9d6cf',roughness:.55}),
+  painel:new T.MeshPhysicalMaterial({map:texSolar(),roughness:.18,metalness:.2,clearcoat:1,clearcoatRoughness:.05}),
+  aluminio:new T.MeshStandardMaterial({color:'#c9ced4',metalness:.9,roughness:.3}),
+  caixa:new T.MeshStandardMaterial({color:'#2c3036',roughness:.55,metalness:.2}),
+  led:new T.MeshStandardMaterial({color:'#e9e7e2',emissive:'#fff2e0',emissiveIntensity:0,roughness:.4}),
+  usb:new T.MeshStandardMaterial({color:'#1a1c20',roughness:.4}),
+  usbLuz:new T.MeshStandardMaterial({color:'#0a2a3a',emissive:'#56c8ff',emissiveIntensity:0}),
+  pcd:new T.MeshStandardMaterial({map:texPCD(),roughness:.7,polygonOffset:true,polygonOffsetFactor:-2}),
+  borracha:new T.MeshStandardMaterial({color:'#111',roughness:.9})
+};
+// madeira: uma textura por tábua para os veios não se repetirem
+const madeiras=[0,1,2,3].map(i=>{const t=texMadeira(i*3.7);return new T.MeshStandardMaterial({map:t.map,normalMap:t.normal,normalScale:new T.Vector2(.35,.35),roughness:.55,envMapIntensity:.6});});
+const todosMateriais=Object.values(M).concat(madeiras);
+// three r128 não converte cores hex para linear: converte aqui para as cores saírem fiéis
+todosMateriais.forEach(m=>{if(m.color&&!m.map)m.color.convertSRGBToLinear();if(m.emissive)m.emissive.convertSRGBToLinear();});
+
+/* =============== pintura: platibanda (ACM) e estrutura (PU no tom da cartela) =============== */
+const ACAB_ACM={fosco:{r:.6,m:.05,cc:.1,ccr:.45},brilho:{r:.22,m:.05,cc:.9,ccr:.06},metalico:{r:.36,m:.6,cc:.45,ccr:.2}};
+const ACAB_EST={fosco:{r:.55,m:.15,cc:.12,ccr:.4},brilho:{r:.32,m:.25,cc:1,ccr:.06},metalico:{r:.34,m:.65,cc:.6,ccr:.15}};
+function pinta(mat,c,tab){mat.color.set(c.hex).convertSRGBToLinear();const a=tab[c.acab];mat.roughness=a.r;mat.metalness=a.m;mat.clearcoat=a.cc;mat.clearcoatRoughness=a.ccr;}
+function aplicaCores(){pinta(M.acm,sel.acm,ACAB_ACM);pinta(M.aco,sel.estrutura,ACAB_EST);desenhaArte();atualizaDesenhosCor();if(typeof atualizaRotulosCor==='function')atualizaRotulosCor();}
+
+/* =============== geometria =============== */
+const temRB=!!T.RoundedBoxGeometry;
+function geoCaixa(w,h,d,r){
+  r=r===undefined?0.003:r;
+  if(temRB&&r>0&&Math.min(w,h,d)>r*2.2) return new T.RoundedBoxGeometry(w,h,d,2,r);
+  return new T.BoxGeometry(w,h,d);
+}
+function sombra(m,c=true,r=true){m.castShadow=c;m.receiveShadow=r;return m;}
+// caixa por limites
+function bx(x0,x1,y0,y1,z0,z1,mat,r){
+  const m=new T.Mesh(geoCaixa(x1-x0,y1-y0,z1-z0,r),mat);
+  m.position.set((x0+x1)/2,(y0+y1)/2,(z0+z1)/2);return sombra(m);
+}
+// peça inclinada (ao longo de z) com o topo no plano da cobertura
+function inclinada(x0,x1,z0,z1,h,mat){
+  const zc=(z0+z1)/2, comp=(z1-z0)/Math.cos(ANG);
+  const m=new T.Mesh(geoCaixa(x1-x0,h,comp),mat);
+  m.rotation.x=-ANG;
+  m.position.set((x0+x1)/2,yR(zc)-(h/2)/Math.cos(ANG),zc);
+  return sombra(m);
+}
+// pé com topo cortado no caimento
+function pe(xc,zc,mat){
+  const yTopo=z=>yR(z)-0.05, base=yTopo(zc);
+  const g=geoCaixa(PE,base,PE,0.004);
+  const p=g.attributes.position;
+  for(let i=0;i<p.count;i++){const y=p.getY(i);if(y>0){p.setY(i,y+(yTopo(zc+p.getZ(i))-base));}}
+  p.needsUpdate=true;g.computeVertexNormals();
+  const m=new T.Mesh(g,mat);m.position.set(xc,base/2,zc);return sombra(m);
+}
+function cilindro(r,h,mat,seg=20){return sombra(new T.Mesh(new T.CylinderGeometry(r,r,h,seg),mat));}
+function painel(w,h,mat){return new T.Mesh(new T.PlaneGeometry(w,h),mat);}
+function vidro(w,h,x,y,z,rotY){
+  const g=new T.Group();
+  const m=new T.Mesh(new T.BoxGeometry(w,h,0.003),M.cristal);m.renderOrder=3;g.add(m);
+  const e=new T.LineSegments(new T.EdgesGeometry(new T.BoxGeometry(w,h,0.003)),M.borda);g.add(e);
+  g.position.set(x,y,z);g.rotation.y=rotY||0;return g;
+}
+
+/* =============== grupos que montam em ordem =============== */
+const grupos=[];
+function grupo(nome,chega,explode){
+  const g=new T.Group();g.name=nome;
+  g.userData={chega,explode:new T.Vector3(...(explode||[0,0,0]))};
+  grupos.push(g);scene.add(g);return g;
+}
+
+/* ---- chão: calçada com placas e intertravado, meio-fio, asfalto, grama e névoa no horizonte ---- */
+const gChao=new T.Group();scene.add(gChao);
+const matsChao=[];
+function matChao(o){const m=new T.MeshStandardMaterial(o);matsChao.push(m);return m;}
+{
+  const LX=240;
+  const tc=texCalcada();tc.map.repeat.set(LX/4,1);tc.normal.repeat.set(LX/4,1);
+  const calcada=new T.Mesh(new T.PlaneGeometry(LX,4.05),matChao({map:tc.map,normalMap:tc.normal,normalScale:new T.Vector2(.6,.6),roughness:.88,envMapIntensity:.35}));
+  calcada.rotation.x=-Math.PI/2;calcada.position.set(0,0,-0.275);calcada.receiveShadow=true;gChao.add(calcada);
+  const degrau=new T.Mesh(new T.PlaneGeometry(LX,0.16),matChao({color:lin('#a9a59c'),roughness:.9}));degrau.position.set(0,-0.08,-2.3);degrau.rotation.y=Math.PI;gChao.add(degrau);
+  const mf=new T.Mesh(new T.BoxGeometry(LX,0.15,0.15),matChao({color:lin('#cfcbc2'),roughness:.8,envMapIntensity:.4}));mf.position.set(0,-0.075,1.825);mf.receiveShadow=true;gChao.add(mf);
+  const ta=texAsfalto();ta.map.repeat.set(LX/4,2.25);ta.normal.repeat.set(LX/4,2.25);
+  const asf=new T.Mesh(new T.PlaneGeometry(LX,9),matChao({map:ta.map,normalMap:ta.normal,normalScale:new T.Vector2(.8,.8),roughness:.82,envMapIntensity:.45}));
+  asf.rotation.x=-Math.PI/2;asf.position.set(0,-0.15,6.4);asf.receiveShadow=true;gChao.add(asf);
+  const faixaMat=matChao({color:lin('#ece6d2'),roughness:.6,polygonOffset:true,polygonOffsetFactor:-2});
+  for(let x=-60;x<60;x+=4){const f=new T.Mesh(new T.PlaneGeometry(2,0.12),faixaMat);f.rotation.x=-Math.PI/2;f.position.set(x,-0.149,6.4);gChao.add(f);}
+  const borda=new T.Mesh(new T.PlaneGeometry(LX,0.1),faixaMat);borda.rotation.x=-Math.PI/2;borda.position.set(0,-0.149,2.15);gChao.add(borda);
+  const mf2=mf.clone();mf2.position.z=10.975;gChao.add(mf2);
+  const calc2=calcada.clone();calc2.rotation.z=Math.PI;calc2.position.set(0,0,13.1);gChao.add(calc2);
+  const tg=texGrama();tg.repeat.set(200,200);
+  const grama=new T.Mesh(new T.PlaneGeometry(900,900),matChao({map:tg,roughness:1,envMapIntensity:.2}));grama.rotation.x=-Math.PI/2;grama.position.y=-0.16;grama.receiveShadow=true;gChao.add(grama);
+}
+// sombras de contato (escurecem onde as peças tocam o chão)
+const texContato=(()=>{const c=cv(128,128),g=c.getContext('2d');const rg=g.createRadialGradient(64,64,2,64,64,64);rg.addColorStop(0,'rgba(0,0,0,.55)');rg.addColorStop(.5,'rgba(0,0,0,.22)');rg.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=rg;g.fillRect(0,0,128,128);return texDe(c,false);})();
+const matContato=new T.MeshBasicMaterial({map:texContato,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-3});
+function contato(x,z,tam,g){const m=new T.Mesh(new T.PlaneGeometry(tam,tam),matContato);m.rotation.x=-Math.PI/2;m.position.set(x,0.002,z);m.renderOrder=1;(g||scene).add(m);return m;}
+const sombraContato=(()=>{const c=cv(256,256),g=c.getContext('2d');const rg=g.createRadialGradient(128,128,10,128,128,128);rg.addColorStop(0,'rgba(0,0,0,.32)');rg.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=rg;g.fillRect(0,0,256,256);
+  const m=new T.Mesh(new T.PlaneGeometry(4.4,2.4),new T.MeshBasicMaterial({map:texDe(c,false),transparent:true,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set(0,0.0015,0.05);return m;})();
+scene.add(sombraContato);
+
+/* luzes da cidade ao longe e estrelas (só à noite) */
+const texPonto=(()=>{const c=cv(32,32),g=c.getContext('2d');const rg=g.createRadialGradient(16,16,0,16,16,16);rg.addColorStop(0,'#fff');rg.addColorStop(.35,'rgba(255,255,255,.7)');rg.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=rg;g.fillRect(0,0,32,32);return texDe(c,false);})();
+function pontosLuz(qtd,fn,tam){
+  const pos=new Float32Array(qtd*3),cor=new Float32Array(qtd*3);
+  for(let i=0;i<qtd;i++){const r=fn(i);pos.set(r.p,i*3);cor.set(r.c,i*3);}
+  const g=new T.BufferGeometry();g.setAttribute('position',new T.BufferAttribute(pos,3));g.setAttribute('color',new T.BufferAttribute(cor,3));
+  const m=new T.PointsMaterial({size:tam*DPR,sizeAttenuation:false,vertexColors:true,map:texPonto,transparent:true,opacity:0,depthWrite:false,fog:false});
+  const p=new T.Points(g,m);p.frustumCulled=false;p.visible=false;scene.add(p);return p;
+}
+const luzesCidade=pontosLuz(520,()=>{const a=Math.random()*Math.PI*2,r=90+Math.random()*160,q=Math.random()<.72,k=0.8+Math.random()*1.8;
+  const y=Math.random()<.92?0.1+Math.random()*1.2:1.2+Math.random()*4;
+  return {p:[Math.cos(a)*r,y,Math.sin(a)*r],c:q?[k,k*.7,k*.4]:[k*.85,k*.92,k]};},3.2);
+const estrelas=pontosLuz(260,()=>{const a=Math.random()*Math.PI*2,e=0.12+Math.random()*1.3;const k=.25+Math.random()*.5;
+  return {p:[Math.cos(a)*Math.cos(e)*380,Math.sin(e)*380,Math.sin(a)*Math.cos(e)*380],c:[k,k,k*1.05]};},1.6);
+
+/* ---- 1 · fundação ---- */
+const gFund=grupo('fundacao',2,[0,0,0]);
+const cantos=[[-pX,pZ],[pX,pZ],[-pX,-pZ],[pX,-pZ]];
+cantos.forEach(([x,z])=>{
+  const bloco=bx(x-0.2,x+0.2,-0.62,-0.002,z-0.2,z+0.2,M.concreto,0);bloco.castShadow=false;gFund.add(bloco);
+  const sp=bx(x-0.03,x+0.03,-0.5,0.26,z-0.03,z+0.03,M.galv,0.003);sp.userData.sapata=true;gFund.add(sp);
+});
+// gabarito no chão (linhas tracejadas entre sapatas)
+const gabarito=new T.LineSegments(new T.BufferGeometry().setFromPoints([
+  new T.Vector3(-pX,0.004,pZ),new T.Vector3(pX,0.004,pZ),new T.Vector3(-pX,0.004,-pZ),new T.Vector3(pX,0.004,-pZ),
+  new T.Vector3(-pX,0.004,pZ),new T.Vector3(-pX,0.004,-pZ),new T.Vector3(pX,0.004,pZ),new T.Vector3(pX,0.004,-pZ)]),
+  new T.LineDashedMaterial({color:'#c2410c',dashSize:.06,gapSize:.04,transparent:true,opacity:0}));
+gabarito.computeLineDistances();scene.add(gabarito);
+// corte do terreno: maquete em seção passando pelo eixo dos pés da frente
+const texTerra=(()=>{const c=cv(512,256),g=c.getContext('2d');g.fillStyle='#6a523d';g.fillRect(0,0,512,256);ruido(g,512,256,9000,.5,['#4f3c2c','#80664c','#5b4532','#8d7a63']);const t=texDe(c);t.wrapS=t.wrapT=T.RepeatWrapping;t.repeat.set(3,1);return t;})();
+const terraMat=new T.MeshStandardMaterial({map:texTerra,roughness:1,transparent:true,opacity:0});
+const lajeMat=new T.MeshStandardMaterial({color:new T.Color('#9a958c').convertSRGBToLinear(),roughness:.9,transparent:true,opacity:0});
+const gTerra=new T.Group();scene.add(gTerra);
+{const x0=-1.85,x1=1.85,z0=-0.95,z1=pZ;
+ const terra=new T.Mesh(new T.BoxGeometry(x1-x0,0.67,z1-z0),terraMat);terra.position.set(0,-0.08-0.335,(z0+z1)/2);terra.receiveShadow=true;gTerra.add(terra);
+ const laje=new T.Mesh(new T.BoxGeometry(x1-x0,0.08,z1-z0),lajeMat);laje.position.set(0,-0.04,(z0+z1)/2);laje.receiveShadow=true;gTerra.add(laje);}
+gTerra.visible=false;
+
+/* ---- 2 · estrutura ---- */
+const gPes=grupo('pes',3,[0,0.45,0]);
+cantos.forEach(([x,z])=>{
+  gPes.add(pe(x,z,M.aco));
+  // parafuso M12 passante (cabeça sextavada + porca)
+  const s=Math.sign(x);
+  const cab=cilindro(0.011,0.008,M.galv,6);cab.rotation.z=Math.PI/2;cab.position.set(x+s*0.039,0.12,z);gPes.add(cab);
+  const por=cilindro(0.011,0.01,M.galv,6);por.rotation.z=Math.PI/2;por.position.set(x-s*0.04,0.12,z);gPes.add(por);
+  const haste=cilindro(0.006,0.1,M.galv,10);haste.rotation.z=Math.PI/2;haste.position.set(x,0.12,z);gPes.add(haste);
+  contato(x,z,0.34,gPes);
+});
+const gTrav=grupo('travessas',3.3,[0,0.45,0]);
+// travessas inferiores (laterais e fundo)
+gTrav.add(bx(-HX,-HX+0.03,0.20,0.25,-zPF+PE,zPF-PE,M.aco));
+gTrav.add(bx(HX-0.03,HX,0.20,0.25,-zPF+PE,zPF-PE,M.aco));
+gTrav.add(bx(-HX+PE,HX-PE,0.20,0.25,zPT,zPT+0.03,M.aco));
+// travessas superiores laterais
+gTrav.add(bx(-HX,-HX+0.03,2.15,2.20,-zPF+PE,zPF-PE,M.aco));
+gTrav.add(bx(HX-0.03,HX,2.15,2.20,-zPF+PE,zPF-PE,M.aco));
+// montantes do fundo
+const yViga=yR(zCobT+0.0165)-0.05;
+[-0.482,0.482].forEach(x=>gTrav.add(bx(x-0.015,x+0.015,0.25,yViga,zPT,zPT+0.05,M.aco)));
+
+/* ---- 3 · cobertura ---- */
+const gQuadro=grupo('quadro',4,[0,1.25,0]);
+gQuadro.add(bx(-HX+0.03,HX-0.03,yViga,yViga+0.05,zCobT,zCobT+0.033,M.aco));            // viga do fundo
+const zVF=0.944, yVF=yR(zCobF-0.0165);
+gQuadro.add(bx(-HX+0.03,HX-0.03,yVF-0.05,yVF,zVF,zCobF,M.aco));                        // viga da frente
+gQuadro.add(inclinada(-HX,-HX+0.03,zCobT,zCobF,0.05,M.aco));                           // terças laterais 30×50
+gQuadro.add(inclinada(HX-0.03,HX,zCobT,zCobF,0.05,M.aco));
+[-0.495,0.495].forEach(x=>gQuadro.add(inclinada(x-0.01,x+0.01,zCobT+0.033,zVF,0.03,M.aco))); // terças 20×30
+const gCob=grupo('cobertura',4.15,[0,1.85,0]);
+{const z0=-0.53,z1=zCobF,zc=(z0+z1)/2,comp=(z1-z0)/Math.cos(ANG);
+ const m=new T.Mesh(new T.BoxGeometry(L,0.003,comp),M.fume);m.rotation.x=-ANG;m.position.set(0,yR(zc)+0.0016,zc);m.renderOrder=2;m.castShadow=true;m.receiveShadow=true;gCob.add(m);
+ const e=new T.LineSegments(new T.EdgesGeometry(new T.BoxGeometry(L,0.003,comp)),new T.LineBasicMaterial({color:'#6b7480',transparent:true,opacity:.6}));e.rotation.copy(m.rotation);e.position.copy(m.position);gCob.add(e);}
+const gCalha=grupo('calha',4.3,[0,1.25,-0.45]);
+{const zA=-0.583,zB=-0.503,y0=2.17,y1=2.25;
+ gCalha.add(bx(-HX,HX,y0,y0+0.002,zA,zB,M.galv,0));
+ gCalha.add(bx(-HX,HX,y0,y1,zA,zA+0.002,M.galv,0));
+ gCalha.add(bx(-HX,HX,y0,y1-0.01,zB-0.002,zB,M.galv,0));
+ gCalha.add(bx(-HX,-HX+0.002,y0,y1,zA,zB,M.galv,0));gCalha.add(bx(HX-0.002,HX,y0,y1,zA,zB,M.galv,0));
+ const cano=cilindro(0.025,y0-0.08,M.pvc);cano.position.set(-1.46,(y0+0.08)/2,-0.541);gCalha.add(cano);
+ const cot=cilindro(0.027,0.07,M.pvc);cot.rotation.x=Math.PI/2;cot.position.set(-1.46,0.08,-0.575);gCalha.add(cot);
+ [0.6,1.3,1.9].forEach(y=>{const ab=cilindro(0.029,0.018,M.galvEsc,16);ab.position.set(-1.46,y,-0.541);gCalha.add(ab);});
+}
+
+/* ---- 4 · fechamento ---- */
+const gVid=grupo('vidros',5,[0,0.45,0]);
+const hLat=2.15-0.25;
+const vE=vidro(zPF*2-PE*2,hLat,-HX+0.015,0.25+hLat/2,0,Math.PI/2);vE.userData.ex=[-0.55,0,0];gVid.add(vE);
+const vD=vidro(zPF*2-PE*2,hLat,HX-0.015,0.25+hLat/2,0,Math.PI/2);vD.userData.ex=[0.55,0,0];gVid.add(vD);
+const hF=yViga-0.25;
+[[-HX+PE,-0.497],[-0.467,0.467],[0.497,HX-PE]].forEach(([a,b])=>{const v=vidro(b-a,hF,(a+b)/2,0.25+hF/2,zPT+0.015,0);v.userData.ex=[0,0,-0.55];gVid.add(v);});
+const adE=painel(0.50,1.80,M.vinilE);adE.position.set(-HX-0.002,1.2,0);adE.rotation.y=-Math.PI/2;adE.renderOrder=4;vE.add(adE);adE.position.set(0,1.2-(0.25+hLat/2),0);adE.rotation.y=Math.PI;adE.position.z=-0.003;
+const adD=painel(0.50,1.80,M.vinilD);vD.add(adD);adD.position.set(0,1.2-(0.25+hLat/2),0.003);adD.renderOrder=4;
+// a placa esquerda tem a face externa voltada para -x; a direita para +x
+
+/* ---- 5 · banco e acessibilidade ---- */
+const gBanco=grupo('banco',6,[0,0.75,0.25]);
+const bc=(bancoX0+bancoX1)/2, bl=bancoX1-bancoX0;
+const madeiraG=(w,h,d,rep)=>{const g=geoCaixa(w,h,d,0.004);return g;};
+[-0.32,-0.17,-0.02].forEach((z,i)=>{const t=new T.Mesh(madeiraG(bl,0.032,0.1),madeiras[i]);t.position.set(bc,0.417,z);gBanco.add(sombra(t));});
+{const t=new T.Mesh(madeiraG(bl,0.1,0.032),madeiras[3]);t.position.set(bc,0.733,zPT+0.066);gBanco.add(sombra(t));}
+gBanco.add(bx(bancoX0-0.04,bancoX1-0.02,0.351,0.401,0,0.03,M.aco));                      // longarina frontal
+gBanco.add(bx(bancoX0-0.04,bancoX1-0.02,0.351,0.401,-0.37,-0.34,M.aco));                 // longarina traseira
+[[-1.455,-0.43,0.03],[-0.482,zPT+0.05,0.03],[0.482,zPT+0.05,0.03],[-0.97,-0.34,0],[0.0,-0.34,0]].forEach(([x,z0,z1])=>gBanco.add(bx(x-0.015,x+0.015,0.351,0.401,z0,z1,M.aco)));
+[-0.49,0.49].forEach(x=>{gBanco.add(bx(x-0.015,x+0.015,0.0,0.351,-0.01,0.03,M.aco));contato(x,0.01,0.2,gBanco);});
+// carregador USB no montante direito (embutido, com tampa)
+const gUSB=grupo('usb',8.3,[0,0.45,0.2]);
+{const cx=0.482,cz=zPT+0.05;
+ gUSB.add(bx(cx-0.03,cx+0.03,0.9,1.0,cz,cz+0.022,M.usb,0.004));
+ const f=cilindro(0.018,0.006,M.usbLuz,24);f.rotation.x=Math.PI/2;f.position.set(cx,0.95,cz+0.024);gUSB.add(f);
+ const anel=new T.Mesh(new T.TorusGeometry(0.019,0.003,8,24),M.galv);anel.position.set(cx,0.95,cz+0.026);gUSB.add(anel);}
+const gPCD=grupo('pcd',6.15,[0,0,0]);
+{const m=new T.Mesh(new T.PlaneGeometry(0.8,1.2),M.pcd);m.rotation.x=-Math.PI/2;m.position.set(1.02,0.003,0.18);m.receiveShadow=true;gPCD.add(m);}
+const gCadeira=grupo('cadeira',6.3,[0,0,0]);
+try{
+  const dados=JSON.parse($('cadeiraDados').textContent);
+  const b64=s=>{const bin=atob(s);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u.buffer;};
+  Object.values(dados).forEach(d=>{
+    const geo=new T.BufferGeometry();
+    geo.setAttribute('position',new T.BufferAttribute(new Float32Array(b64(d.p)),3));
+    geo.setIndex(new T.BufferAttribute(d.i32?new Uint32Array(b64(d.i)):new Uint16Array(b64(d.i)),1));
+    geo.computeVertexNormals();
+    const cor=new T.Color(`rgb(${d.cor.join(',')})`).convertSRGBToLinear();
+    const m=new T.Mesh(geo,new T.MeshStandardMaterial({color:cor,roughness:.5,metalness:d.cor[0]>120?.6:.1,side:T.DoubleSide}));
+    gCadeira.add(sombra(m));
+  });
+}catch(e){}
+
+/* ---- 6 · platibanda ---- */
+const gPlat=grupo('platibanda',7,[0,2.55,0]);
+{ // quadro 20×20
+  const t=0.02, xo=1.52, zf=0.997, zt=-0.603;
+  [2.15,2.47].forEach(y=>{
+    gPlat.add(bx(-xo,xo,y,y+t,zf-t,zf,M.galvEsc,0));gPlat.add(bx(-xo,xo,y,y+t,zt,zt+t,M.galvEsc,0));
+    gPlat.add(bx(-xo,-xo+t,y,y+t,zt,zf,M.galvEsc,0));gPlat.add(bx(xo-t,xo,y,y+t,zt,zf,M.galvEsc,0));
+  });
+  [[-xo,zf-t],[xo-t,zf-t],[-xo,zt],[xo-t,zt],[-0.51,zf-t],[0.49,zf-t],[-0.51,zt],[0.49,zt],[-xo,0.19],[xo-t,0.19]].forEach(([x,z])=>gPlat.add(bx(x,x+t,2.17,2.47,z,z+t,M.galvEsc,0)));
+  // ACM 3 mm: face externa bordô, verso cinza
+  const e=0.003,h=yPlat1-yPlat0,yc=(yPlat0+yPlat1)/2;
+  const mats=(ext)=>{const a=[M.acm,M.acm,M.acm,M.acm,M.acm,M.acm];a[ext]=M.acm;return a;};
+  const frente=new T.Mesh(new T.BoxGeometry(2*xPlat,h,e),[M.acm,M.acm,M.acm,M.acm,M.acm,M.acmVerso]);frente.position.set(0,yc,zPlatF-e/2);gPlat.add(sombra(frente));
+  const fundo=new T.Mesh(new T.BoxGeometry(2*xPlat,h,e),[M.acm,M.acm,M.acm,M.acm,M.acmVerso,M.acm]);fundo.position.set(0,yc,zPlatT+e/2);gPlat.add(sombra(fundo));
+  const ladoE=new T.Mesh(new T.BoxGeometry(e,h,zPlatF-zPlatT),[M.acmVerso,M.acm,M.acm,M.acm,M.acm,M.acm]);ladoE.position.set(-xPlat+e/2,yc,(zPlatF+zPlatT)/2);gPlat.add(sombra(ladoE));
+  const ladoD=new T.Mesh(new T.BoxGeometry(e,h,zPlatF-zPlatT),[M.acm,M.acmVerso,M.acm,M.acm,M.acm,M.acm]);ladoD.position.set(xPlat-e/2,yc,(zPlatF+zPlatT)/2);gPlat.add(sombra(ladoD));
+  // dobras do ACM (acabamento de 20 mm em cima e embaixo)
+  [yPlat1-e/2,yPlat0+e/2].forEach(y=>{
+    gPlat.add(bx(-xPlat,xPlat,y-e/2,y+e/2,zPlatF-0.022,zPlatF-e,M.acm,0));gPlat.add(bx(-xPlat,xPlat,y-e/2,y+e/2,zPlatT+e,zPlatT+0.022,M.acm,0));
+    gPlat.add(bx(-xPlat+e,-xPlat+0.022,y-e/2,y+e/2,zPlatT,zPlatF,M.acm,0));gPlat.add(bx(xPlat-0.022,xPlat-e,y-e/2,y+e/2,zPlatT,zPlatF,M.acm,0));
+  });
+  const ad=painel(2.4,0.30,M.vinil);ad.position.set(0,yc,zPlatF+0.0012);ad.renderOrder=5;gPlat.add(ad);
+}
+
+/* ---- 7 · energia ---- */
+const gSolar=grupo('solar',8,[0,3.3,0]);
+{ // suporte em cantoneira apoiado na viga do fundo e nas terças (nunca no policarbonato)
+  const yT=yViga+0.05, zFr=0.12, yF=yR(zFr)+0.004;
+  gSolar.add(bx(0.47,1.51,yT,yT+0.03,zCobT+0.002,zCobT+0.032,M.galv,0));
+  gSolar.add(bx(0.47,1.51,yF,yF+0.03,zFr-0.015,zFr+0.015,M.galv,0));
+  // painel inclinado (borda alta no fundo)
+  const pw=0.67,pd=0.78,inc=0.16, zc=-0.20, yc=yPlat1-(pd/2)*Math.sin(0.16)-0.004;
+  const pn=new T.Group();pn.position.set(1.0,yc,zc);pn.rotation.x=inc;gSolar.add(pn);
+  const vidroP=new T.Mesh(new T.BoxGeometry(pw-0.03,0.006,pd-0.03),[M.aluminio,M.aluminio,M.painel,M.caixa,M.aluminio,M.aluminio]);pn.add(sombra(vidroP));
+  const mold=[[pw,0.035,0.015,0,-0.01,(pd-0.015)/2],[pw,0.035,0.015,0,-0.01,-(pd-0.015)/2],[0.015,0.035,pd,(pw-0.015)/2,-0.01,0],[0.015,0.035,pd,-(pw-0.015)/2,-0.01,0]];
+  mold.forEach(([w,h,d,x,y,z])=>{const m=new T.Mesh(new T.BoxGeometry(w,h,d),M.aluminio);m.position.set(x,y,z);pn.add(sombra(m));});
+  // pernas do suporte até o painel
+  const pernas=[[ -1, 1, yF+0.03, zFr],[1,1,yF+0.03,zFr],[-1,-1,yT+0.03,zCobT+0.017],[1,-1,yT+0.03,zCobT+0.017]];
+  pernas.forEach(([sx,sz,y0,z0])=>{
+    const zl=sz*(pd/2-0.05);
+    const p=new T.Vector3(sx*(pw/2-0.05),-0.03,zl).applyEuler(new T.Euler(inc,0,0)).add(new T.Vector3(1.0,yc,zc));
+    const a=new T.Vector3(p.x,y0,z0);
+    const d=p.clone().sub(a);const len=d.length();
+    const m=new T.Mesh(new T.BoxGeometry(0.025,len,0.025),M.galv);
+    m.position.copy(a).add(p).multiplyScalar(.5);m.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),d.normalize());gSolar.add(sombra(m));
+  });
+  // bateria de lítio + controlador, presa ao suporte
+  gSolar.add(bx(0.75,1.25,yT+0.03,2.395,-0.50,-0.26,M.caixa,0.01));
+  gSolar.add(bx(0.78,0.84,2.355,2.37,-0.265,-0.255,M.usbLuz,0));
+  // fotocélula
+  const fc=cilindro(0.022,0.05,M.caixa,18);fc.position.set(1.42,yT+0.2,-0.49);gSolar.add(fc);
+  const dom=new T.Mesh(new T.SphereGeometry(0.022,16,10,0,Math.PI*2,0,Math.PI/2),new T.MeshPhysicalMaterial({color:'#f2f4f6',roughness:.2,transparent:true,opacity:.85}));dom.position.set(1.42,yT+0.225,-0.49);gSolar.add(dom);
+  gSolar.add(bx(1.4,1.44,yT+0.03,yT+0.175,-0.5,-0.48,M.galv,0));
+}
+const gLed=grupo('led',8.15,[0,1.05,0.3]);
+{const y=yR(zLed)-0.03/Math.cos(ANG);gLed.add(bx(-1.0,1.0,y-0.008,y,zLed-0.0085,zLed+0.0085,M.aluminio,0.002));
+ const dif=bx(-0.995,0.995,y-0.0105,y-0.007,zLed-0.0065,zLed+0.0065,M.led,0);dif.castShadow=false;gLed.add(dif);}
+// brilho do LED à noite
+const brilho=(()=>{const c=cv(256,64),g=c.getContext('2d');const rg=g.createRadialGradient(128,32,2,128,32,120);rg.addColorStop(0,'rgba(255,236,205,.95)');rg.addColorStop(.25,'rgba(255,220,170,.35)');rg.addColorStop(1,'rgba(255,220,170,0)');g.fillStyle=rg;g.fillRect(0,0,256,64);
+  const s=new T.Sprite(new T.SpriteMaterial({map:texDe(c),transparent:true,depthWrite:false,blending:T.AdditiveBlending,opacity:0}));s.scale.set(2.9,0.42,1);s.position.set(0,yR(zLed)-0.06,zLed);return s;})();
+scene.add(brilho);
+
+/* =============== efeitos: água da chuva e energia =============== */
+function particulas(qtd,cor,tam,aditivo){
+  const g=new T.BufferGeometry();g.setAttribute('position',new T.BufferAttribute(new Float32Array(qtd*3),3));
+  const c=cv(64,64),x=c.getContext('2d');const rg=x.createRadialGradient(32,32,0,32,32,32);rg.addColorStop(0,'rgba(255,255,255,1)');rg.addColorStop(.4,'rgba(255,255,255,.8)');rg.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=rg;x.fillRect(0,0,64,64);
+  const m=new T.PointsMaterial({color:cor,size:tam,map:texDe(c),transparent:true,depthWrite:false,opacity:0,blending:aditivo?T.AdditiveBlending:T.NormalBlending,depthTest:!aditivo});
+  const p=new T.Points(g,m);p.frustumCulled=false;p.renderOrder=20;scene.add(p);return p;
+}
+function caminho(pts){const v=pts.map(p=>new T.Vector3(...p));const seg=[];let tot=0;for(let i=1;i<v.length;i++){const l=v[i].distanceTo(v[i-1]);seg.push(l);tot+=l;}
+  return {v,seg,tot,em(t,out){let d=t*tot;for(let i=0;i<seg.length;i++){if(d<=seg[i]){return out.copy(v[i]).lerp(v[i+1],seg[i]?d/seg[i]:0);}d-=seg[i];}return out.copy(v[v.length-1]);}};}
+const agua=particulas(70,'#4aa8ff',0.13,false);
+const caminhosAgua=[];for(let i=0;i<70;i++){const x=-1.4+Math.random()*2.8;
+  caminhosAgua.push(caminho([[x,yR(0.97)+0.012,0.97],[x,yR(-0.52)+0.012,-0.52],[x,2.2,-0.543],[-1.46,2.2,-0.543],[-1.46,0.07,-0.541],[-1.46,0.07,-0.64],[-1.46,0.01,-0.75]]));}
+const energia=particulas(54,'#ffc861',0.17,true);
+const caminhosEnergia=[
+  caminho([[1.0,2.43,-0.2],[1.0,2.33,-0.3],[0.495,yViga+0.02,-0.49],[0.482,yViga-0.05,-0.475],[0.482,0.95,-0.475]]),
+  caminho([[1.0,2.43,-0.2],[1.0,2.33,-0.3],[0.495,yViga+0.02,-0.49],[0.495,yR(zLed)-0.03,zLed],[-1.0,yR(zLed)-0.04,zLed]]),
+  caminho([[1.0,2.43,-0.2],[1.0,2.33,-0.3],[0.495,yViga+0.02,-0.49],[0.495,yR(zLed)-0.03,zLed],[1.0,yR(zLed)-0.04,zLed]])];
+// linha do caimento
+const linhaCai=new T.Line(new T.BufferGeometry().setFromPoints([new T.Vector3(-HX-0.09,yR(zCobF)+0.03,zCobF),new T.Vector3(-HX-0.09,yR(zCobT)+0.03,zCobT),new T.Vector3(-HX-0.09,yR(zCobF)+0.03,zCobT)]),new T.LineBasicMaterial({color:'#7cc8ff',transparent:true,opacity:0,depthTest:false}));
+linhaCai.renderOrder=10;scene.add(linhaCai);
+
+/* =============== roteiro =============== */
+// cam: [azimute°, elevação°, distância, alvo x,y,z] · n: noite · corte: chão transparente · ex: vista explodida
+const ETAPAS=[
+  {cam:[34,8,8.4,0,1.3,0.25],n:.92,dm:1.12},
+  {cam:[38,13,14.5,0.2,2.6,0.1],n:0,ex:1},
+  {cam:[20,26,7.4,0.45,-0.25,-0.1],n:0,corte:1,dm:1.4},
+  {cam:[-38,12,7.4,0,1.15,0],n:0},
+  {cam:[-128,14,7.6,0,1.35,0.15],n:0},
+  {cam:[42,9,6.8,0,1.2,0.1],n:0},
+  {cam:[22,20,7.0,0.15,0.75,0.1],n:0,dm:1.3},
+  {cam:[6,5,6.6,0,1.75,0.3],n:0},
+  {cam:[-30,36,7.0,0.45,2.0,0],n:.1},
+  {cam:[-20,0,7.8,0,1.12,0.3],n:1,dm:1.18},
+  {cam:[36,11,7.8,0,1.25,0.2],n:.35}
+];
+ETAPAS.forEach((e,i)=>e.lado=(i>=2&&i%2===0)?1:-1);
+const nomesFase=[...document.querySelectorAll('#passos .passo')].map(p=>p.dataset.nome);
+
+/* rótulos: [etapa, grupo, ponto montado, título, detalhe, prioridade(1 = aparece no celular)] */
+const R=[
+  [1,gPlat,[xPlat,2.32,0.55],'Platibanda em ACM','acm1',1],
+  [1,gSolar,[1.33,2.45,-0.2],'Kit solar','painel + bateria',1],
+  [1,gCob,[-1.1,yR(0.6),0.6],'Cobertura','policarbonato fumê',1],
+  [1,gQuadro,[-HX,yR(0.2)-0.025,0.2],'Quadro da cobertura','30×50 e 20×30 mm',0],
+  [1,gCalha,[-1.25,2.21,-0.583],'Calha e descida','80×80 · PVC 50',0],
+  [1,gPes,[-pX,1.4,pZ],'Estrutura','aço galvanizado',1],
+  [1,gVid,[HX,1.5,0.2],'Fechamentos','policarbonato cristal',1],
+  [1,gBanco,[-0.6,0.43,0.03],'Banco','madeira plástica',1],
+  [1,gFund,[pX,0.2,pZ],'Sapatas','tubo 60×60 mm',1],
+  [2,gFund,[pX,0.26,pZ],'Sapata 60×60 mm','fica dentro do pé',1],
+  [2,gFund,[-pX,-0.25,pZ],'500 mm no concreto','bloco feito pela prefeitura',1],
+  [2,null,[0,0.004,pZ],'Gabarito','distâncias exatas',0],
+  [3,gPes,[pX,1.3,pZ],'Pé 70×70 mm','parede de 1,50 mm',1],
+  [3,gPes,[-pX-0.04,0.12,pZ],'Parafuso M12','classe 8.8, passante',1],
+  [3,gTrav,[0.482,1.2,zPT],'Montante 30×50','divide o fundo em 3',0],
+  [3,gTrav,[HX,0.225,0.1],'Travessa 30×50','',0],
+  [4,gCob,[-0.6,yR(0.5),0.5],'Policarbonato fumê','3 mm com proteção UV',1],
+  [4,null,[-HX-0.09,yR(0.2)+0.03,0.2],'Caimento de 10%','para trás',1],
+  [4,gCalha,[0.2,2.25,-0.583],'Calha 80×80 mm','galvanizada',1],
+  [4,gCalha,[-1.46,0.9,-0.566],'Descida PVC 50 mm','atrás do pé',1],
+  [5,gVid,[HX,1.6,0.15],'Policarbonato cristal','3 mm, não estilhaça',1],
+  [5,gVid,[-HX,1.65,-0.1],'Adesivo lateral','vinil 1,80 × 0,50 m',0],
+  [6,gBanco,[-1.0,0.433,-0.02],'Assento a 0,43 m','3 tábuas 100×32 mm',1],
+  [6,gBanco,[-0.2,0.78,zPT+0.08],'Encosto','madeira plástica',0],
+  [6,gPCD,[1.02,0.004,0.62],'Espaço livre','0,80 × 1,20 m',1],
+  [7,gPlat,[-0.95,2.47,zPlatF],'ACM','acm7',1],
+  [7,gPlat,[0.25,2.2,zPlatF],'Nome e brasão','vinil branco',1],
+  [8,gSolar,[0.75,2.42,0.0],'Painel 100 Wp','monocristalino',1],
+  [8,gSolar,[0.75,2.34,-0.26],'Bateria 555 Wh','lítio, 12 V',1],
+  [8,gSolar,[1.42,yViga+0.27,-0.49],'Fotocélula','liga ao escurecer',0],
+  [8,gTrav,[0.482,1.6,zPT+0.05],'Cabos','por dentro dos tubos',0],
+  [9,gLed,[-0.6,yR(zLed)-0.04,zLed],'LED 4000 K','perfil com difusor',1],
+  [9,gUSB,[0.482,0.95,zPT+0.075],'Carregador USB','C + A, 30 W',1]
+];
+const camadaRot=$('rotulos'), svgFios=$('fios');
+const rotulos=R.map(([etapa,g,p,t,s,prio])=>{
+  const el=document.createElement('div');el.className='rotulo';el.innerHTML=`<b>${t}</b>${s?`<span>${s}</span>`:''}`;camadaRot.appendChild(el);
+  const ln=document.createElementNS('http://www.w3.org/2000/svg','line');ln.setAttribute('class','fio');
+  const pt=document.createElementNS('http://www.w3.org/2000/svg','circle');pt.setAttribute('class','ponto');pt.setAttribute('r','3.5');
+  svgFios.appendChild(ln);svgFios.appendChild(pt);
+  return {etapa,g,p:new T.Vector3(...p),el,ln,pt,prio,w:0,h:0};
+});
+
+function atualizaRotulosCor(){
+  rotulos.forEach(r=>{
+    if(r.tipo==='acm1'){r.el.innerHTML=`<b>Platibanda em ACM</b><span>${sel.acm.nome.toLowerCase()}</span>`;r.w=0;}
+    if(r.tipo==='acm7'){r.el.innerHTML=`<b>ACM ${sel.acm.nome}</b><span>cód. ${sel.acm.cod} · 3 mm</span>`;r.w=0;}
+  });
+}
+rotulos.forEach((r,i)=>{if(R[i][4]==='acm1'||R[i][4]==='acm7')r.tipo=R[i][4];});
+aplicaCores();
+
+/* índice lateral */
+const indice=$('indice');
+nomesFase.forEach((n,i)=>{const b=document.createElement('button');b.type='button';b.innerHTML=`<span>${n}</span><i></i>`;b.addEventListener('click',()=>irPara(i));indice.appendChild(b);});
+const botoesIndice=[...indice.children];
+function irPara(i){const r=$('passos').getBoundingClientRect();window.scrollTo({top:window.scrollY+r.top+i*window.innerHeight+2,behavior:reduz?'auto':'smooth'});}
+
+/* =============== estado e animação =============== */
+const lerp=(a,b,t)=>a+(b-a)*t, clamp=(v,a,b)=>Math.min(Math.max(v,a),b), suave=t=>{t=clamp(t,0,1);return t*t*(3-2*t);};
+const passosEl=$('passos');
+function progresso(){
+  const r=passosEl.getBoundingClientRect(),vh=window.innerHeight,tot=r.height-vh;
+  return {s:clamp(-r.top/vh,0,ETAPAS.length-1),frac:tot>0?clamp(-r.top/tot,0,1):0};
+}
+function alvoDe(s){
+  const i=Math.floor(s),j=Math.min(i+1,ETAPAS.length-1);
+  let t=suave((s-i-0.12)/0.76);
+  const A=ETAPAS[i],B=ETAPAS[j],o={};
+  ['az','el','d','tx','ty','tz'].forEach((k,q)=>o[k]=lerp(A.cam[q],B.cam[q],t));
+  o.n=lerp(A.n||0,B.n||0,t);o.dm=lerp(A.dm||1.32,B.dm||1.32,t);o.lado=lerp(A.lado,B.lado,t);o.corte=lerp(A.corte||0,B.corte||0,t);o.ex=lerp(A.ex||0,B.ex||0,t);
+  return o;
+}
+const est={az:34,el:9,d:7.6,tx:0,ty:1.3,tz:0.25,n:.92,corte:0,ex:0,s:0,lado:-1,dm:1.12};
+let explorando=false, expNoite=0, expExplodir=0, controles=null;
+
+function aplicaGrupos(s,ex){
+  grupos.forEach(g=>{
+    const u=g.userData, E=u.explode;
+    let off=new T.Vector3(), vis=true;
+    if(explorando){ off.copy(E).multiplyScalar(ex); }
+    else if(s<=1){ off.copy(E).multiplyScalar(ex); }
+    else if(s<2){
+      const t=suave((s-1)/0.8);
+      if(u.chega<3){ off.copy(E).multiplyScalar(1-t); }
+      else { off.copy(E).multiplyScalar(1); off.y+=t*6; vis=t<0.98; }
+    } else {
+      const k=suave((s-(u.chega-1)-0.1)/0.55);
+      vis=k>0.001; off.set(0,(1-k)*2.4,0);
+    }
+    g.visible=vis; g.position.copy(off);
+    // peças com afastamento próprio na vista explodida (placas do fechamento)
+    g.children.forEach(c=>{if(c.userData.ex){const f=(explorando||s<=1)?ex:(s<2?(1-suave((s-1)/0.8))*(u.chega<3?1:1):0);c.position.x=c.userData.base?c.userData.base.x:(c.userData.base=c.position.clone()).x;c.position.copy(c.userData.base).add(new T.Vector3(...c.userData.ex).multiplyScalar(f));}});
+  });
+  const pesNoLugar=explorando?ex<0.05:(s<=1?ex<0.05:s>=2.75);
+  gFund.children.forEach(c=>{if(c.userData.sapata)c.visible=!pesNoLugar;});
+}
+let nAnterior=-1;
+const corHemiDia=lin('#d6e4f2'),corHemiNoite=lin('#3b4a6b');
+let exposicao=1, opChao=1;
+function aplicaNoite(n){
+  if(Math.abs(n-nAnterior)<0.002)return;nAnterior=n;
+  pintaCeu(ceu.u,n);
+  scene.fog.color.copy(CEU.dia.horiz).lerp(CEU.noite.horiz,n);scene.fog.density=lerp(0.012,0.02,n);
+  scene.environment=n>0.5?envNoite:envDia;
+  hemi.intensity=lerp(0.35,0.05,n);hemi.color.copy(corHemiDia).lerp(corHemiNoite,n);
+  sol.intensity=lerp(2.6,0,Math.min(1,n*1.3));
+  lua.intensity=lerp(0,0.12,n);poste.intensity=lerp(0,0.16,n);
+  const acesa=clamp((n-0.3)/0.6,0,1);
+  if(ledArea)ledArea.intensity=lerp(0,34,acesa);
+  ledSpot.intensity=lerp(0,3.2,acesa);
+  M.led.emissiveIntensity=lerp(0,9,acesa);
+  M.usbLuz.emissiveIntensity=lerp(0,1.1,acesa);
+  M.vinil.emissiveIntensity=lerp(0,0.08,acesa);
+  brilho.material.opacity=lerp(0,composer?0.3:0.9,acesa);
+  todosMateriais.concat(matsChao).forEach(m=>{if('envMapIntensity' in m){if(m.userData.env0===undefined)m.userData.env0=m.envMapIntensity;m.envMapIntensity=m.userData.env0*(n>0.5?(m===M.cristal||m===M.fume?0.5:1.3):1);}});
+  const ol=clamp((n-0.25)/0.6,0,1);luzesCidade.visible=estrelas.visible=ol>0.01;luzesCidade.material.opacity=ol;estrelas.material.opacity=ol*0.9;
+  exposicao=lerp(1.0,1.18,n);renderer.toneMappingExposure=exposicao;
+  if(bloom){bloom.strength=lerp(0,0.85,acesa);bloom.enabled=bloom.strength>0.01;}
+}
+function aplicaCorte(c){
+  const op=lerp(1,0,clamp(c*1.4,0,1));
+  if(Math.abs(op-opChao)>0.001){opChao=op;matsChao.forEach(m=>{m.transparent=op<0.999;m.opacity=op;m.depthWrite=op>0.5;});gChao.visible=op>0.01;}
+  sombraContato.material.opacity=1-c;
+  const ct=clamp(c*1.6,0,1);gTerra.visible=ct>0.01;terraMat.opacity=lajeMat.opacity=ct;terraMat.transparent=lajeMat.transparent=ct<0.99;terraMat.depthWrite=lajeMat.depthWrite=ct>0.5;
+  gabarito.material.opacity=clamp((c-0.6)/0.4,0,1)*(est.s>1.5&&est.s<3.2?1:0);
+}
+
+let largura=0,altura=0;
+function redimensiona(){
+  const w=canvas.clientWidth,h=canvas.clientHeight;if(w===largura&&h===altura)return;largura=w;altura=h;
+  renderer.setSize(w,h,false);if(composer)composer.setSize(w,h);camera.aspect=w/h;camera.fov=w<h?50:35;camera.updateProjectionMatrix();
+}
+
+const proj=new T.Vector3(), tmpV=new T.Vector3();
+function atualizaRotulos(s){
+  const larg=largura,alt=altura;
+  const ativos=[];
+  rotulos.forEach(r=>{
+    let a=explorando?0:clamp(1-Math.abs(s-r.etapa)/0.32,0,1);
+    if(celular&&!r.prio)a=0;
+    if(r.g&&!r.g.visible)a=0;
+    if(a<=0.01){if(r.vis){r.el.style.opacity=0;r.ln.style.opacity=0;r.pt.style.opacity=0;r.vis=false;}return;}
+    proj.copy(r.p);if(r.g)proj.add(r.g.position);
+    proj.project(camera);
+    if(proj.z>1){a=0;}
+    const x=(proj.x*.5+.5)*larg,y=(-proj.y*.5+.5)*alt;
+    if(!r.w){r.w=r.el.offsetWidth||120;r.h=r.el.offsetHeight||34;}
+    ativos.push({r,x,y,a,lado:larg>=900?(est.lado<0?1:-1):(x>larg*0.5?1:-1)});
+  });
+  // distribui por lado e evita sobreposição
+  [-1,1].forEach(lado=>{
+    const l=ativos.filter(o=>o.lado===lado).sort((p,q)=>p.y-q.y);
+    let ult=-1e9;
+    l.forEach(o=>{let ly=o.y-26;if(ly<ult+o.r.h+6)ly=ult+o.r.h+6;ult=ly;o.ly=ly;});
+  });
+  ativos.forEach(o=>{
+    const {r,x,y,a,lado}=o;const dx=lado*48;
+    let lx=lado>0?x+dx:x+dx-r.w; lx=clamp(lx,8,larg-r.w-(larg>=1000?190:8));
+    const ly=clamp(o.ly,60,alt-r.h-8);
+    r.el.style.transform=`translate(${lx.toFixed(1)}px,${ly.toFixed(1)}px)`;r.el.style.opacity=a;
+    const ax=lado>0?lx:lx+r.w, ay=ly+r.h/2;
+    r.ln.setAttribute('x1',x.toFixed(1));r.ln.setAttribute('y1',y.toFixed(1));r.ln.setAttribute('x2',ax.toFixed(1));r.ln.setAttribute('y2',ay.toFixed(1));
+    r.pt.setAttribute('cx',x.toFixed(1));r.pt.setAttribute('cy',y.toFixed(1));
+    r.ln.style.opacity=a;r.pt.style.opacity=a;r.vis=true;
+  });
+}
+
+let tempo=0,ultimo=performance.now(),faseAtual=-1;
+function animaParticulas(s,dt){
+  const fa=explorando?0:clamp(1-Math.abs(s-4)/0.4,0,1);
+  agua.material.opacity=fa*0.9;agua.visible=fa>0.01;
+  if(agua.visible){const p=agua.geometry.attributes.position;for(let i=0;i<caminhosAgua.length;i++){caminhosAgua[i].em(((tempo*0.22+i/caminhosAgua.length)%1),tmpV);p.setXYZ(i,tmpV.x,tmpV.y,tmpV.z);}p.needsUpdate=true;}
+  linhaCai.material.opacity=fa;
+  const fe=explorando?0:clamp(1-Math.abs(s-8)/0.4,0,1);
+  energia.material.opacity=fe;energia.visible=fe>0.01;
+  if(energia.visible){const p=energia.geometry.attributes.position;const n=energia.geometry.attributes.position.count;for(let i=0;i<n;i++){const c=caminhosEnergia[i%3];c.em(((tempo*0.3+i/n*3)%1),tmpV);p.setXYZ(i,tmpV.x,tmpV.y,tmpV.z);}p.needsUpdate=true;}
+}
+
+function quadro(agora){
+  const dt=Math.min((agora-ultimo)/1000,0.1);ultimo=agora;tempo+=dt;
+  redimensiona();
+  let alvo, s;
+  if(explorando){
+    s=ETAPAS.length-1; alvo={n:expNoite,corte:0,ex:expExplodir};
+  } else {
+    const pr=progresso();s=pr.s;alvo=alvoDe(s);
+    $('barra').style.width=(pr.frac*100).toFixed(1)+'%';
+  }
+  const k=(reduz||window.__teste)?1:1-Math.pow(0.002,dt);
+  est.s=lerp(est.s,s,(reduz||window.__teste)?1:1-Math.pow(0.0004,dt));
+  ['n','corte','ex'].forEach(c=>est[c]=lerp(est[c],alvo[c],k));
+  if(!explorando){['az','el','d','tx','ty','tz','lado','dm'].forEach(c=>est[c]=lerp(est[c],alvo[c],k));}
+  const fase=Math.round(est.s);
+  if(fase!==faseAtual&&!explorando){faseAtual=fase;$('fase').textContent=nomesFase[fase]||'';botoesIndice.forEach((b,i)=>b.classList.toggle('atual',i===fase));}
+
+  aplicaGrupos(explorando?10:est.s,est.ex);
+  aplicaNoite(est.n);
+  aplicaCorte(est.corte);
+  animaParticulas(est.s,dt);
+
+  if(explorando&&controles){controles.update();if(!painelEx.hidden&&largura<700)camera.setViewOffset(largura,altura,0,altura*0.2,largura,altura);else camera.clearViewOffset();}
+  else{
+    const giro=reduz?0:Math.sin(tempo*0.22)*2.2;
+    const az=T.MathUtils.degToRad(est.az+giro),el=T.MathUtils.degToRad(est.el);
+    const retrato=camera.aspect<0.85, d=est.d*(retrato?est.dm:1);
+    const alvoP=new T.Vector3(est.tx,est.ty,est.tz);
+    camera.position.set(alvoP.x+Math.sin(az)*Math.cos(el)*d,alvoP.y+Math.sin(el)*d,alvoP.z+Math.cos(az)*Math.cos(el)*d);
+    camera.lookAt(alvoP);
+    if(largura<900){camera.setViewOffset(largura,altura,0,altura*0.17,largura,altura);}
+    else{camera.setViewOffset(largura,altura,est.lado*largura*0.15,0,largura,altura);}
+  }
+  sol.target.position.set(0,0,0);
+  if(composer){passeFinal.uniforms.exposicao.value=exposicao;composer.render();}else renderer.render(scene,camera);
+  atualizaRotulos(est.s);
+  requestAnimationFrame(quadro);
+}
+requestAnimationFrame(quadro);
+
+/* =============== modo explorar =============== */
+const palco=$('palco');
+function entrarExplorar(){
+  if(!T.OrbitControls)return;
+  explorando=true;palco.classList.add('explorando');document.body.style.overflow='hidden';
+  camera.clearViewOffset();
+  if(!controles){controles=new T.OrbitControls(camera,canvas);controles.enableDamping=true;controles.dampingFactor=.08;controles.minDistance=2.2;controles.maxDistance=14;controles.maxPolarAngle=Math.PI*0.495;controles.enablePan=false;}
+  controles.target.set(0,1.25,0.2);controles.enabled=true;controles.update();
+  rotulos.forEach(r=>{r.el.style.opacity=0;r.ln.style.opacity=0;r.pt.style.opacity=0;});
+}
+function sairExplorar(){abrePainel(false);explorando=false;palco.classList.remove('explorando');document.body.style.overflow='';if(controles)controles.enabled=false;}
+$('bExplorar').addEventListener('click',entrarExplorar);
+$('bSair').addEventListener('click',sairExplorar);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&explorando)sairExplorar();});
+const bDia=$('bDia'),bNoite=$('bNoite'),bEx=$('bExplodir');
+bDia.addEventListener('click',()=>{expNoite=0;bDia.setAttribute('aria-pressed','true');bNoite.setAttribute('aria-pressed','false');});
+bNoite.addEventListener('click',()=>{expNoite=1;bNoite.setAttribute('aria-pressed','true');bDia.setAttribute('aria-pressed','false');});
+bEx.addEventListener('click',()=>{expExplodir=expExplodir?0:1;bEx.setAttribute('aria-pressed',String(!!expExplodir));bEx.textContent=expExplodir?'Juntar as peças':'Ver peças separadas';});
+
+/* =============== nome do município =============== */
+const campo=$('nomeCidade');campo.value=cidade;
+// paleta de cores
+let alvoCor='acm', filtroCor=sel.acm.acab;
+const abas=[...document.querySelectorAll('#cores .abas button')], filtros=[...document.querySelectorAll('#cores .filtros button')];
+function montaAmostras(){
+  const box=$('amostras');box.innerHTML='';
+  CORES.filter(c=>c.acab===filtroCor).forEach(c=>{
+    const b=document.createElement('button');b.type='button';b.className='amostra';b.setAttribute('role','radio');
+    b.title=`${c.nome} · ${c.cod}`;b.setAttribute('aria-label',`${c.nome}, código ${c.cod}`);
+    b.style.background=fundoAmostra(c);b.setAttribute('aria-checked',String(sel[alvoCor]===c));
+    b.addEventListener('click',()=>{sel[alvoCor]=c;aplicaCores();montaAmostras();mostraEscolha();});
+    box.appendChild(b);
+  });
+  filtros.forEach(f=>f.setAttribute('aria-pressed',String(f.dataset.filtro===filtroCor)));
+}
+function mostraEscolha(){const c=sel[alvoCor];$('corAmostra').style.background=fundoAmostra(c);$('corNome').textContent=(alvoCor==='acm'?'Platibanda: ':'Estrutura: ')+c.nome;$('corCodigo').textContent='cód. '+c.cod;}
+abas.forEach(a=>a.addEventListener('click',()=>{alvoCor=a.dataset.alvo;abas.forEach(x=>x.setAttribute('aria-selected',String(x===a)));filtroCor=sel[alvoCor].acab;montaAmostras();mostraEscolha();}));
+filtros.forEach(f=>f.addEventListener('click',()=>{filtroCor=f.dataset.filtro;montaAmostras();}));
+montaAmostras();mostraEscolha();
+// no modo 3D, o mesmo painel abre por cima da cena
+const pers=$('personalizar'),persPai=pers.parentNode,persProx=pers.nextSibling,painelEx=$('painelExplorar'),bPers=$('bPers');
+function abrePainel(abrir){
+  if(abrir){painelEx.appendChild(pers);painelEx.hidden=false;}
+  else{persPai.insertBefore(pers,persProx);painelEx.hidden=true;}
+  bPers.setAttribute('aria-pressed',String(abrir));
+}
+bPers.addEventListener('click',()=>abrePainel(painelEx.hidden));
+$('bPersCel').addEventListener('click',()=>{entrarExplorar();abrePainel(true);});
+campo.addEventListener('input',()=>{cidade=campo.value.trim();desenhaArte();});
+
+/* =============== desenhos técnicos =============== */
+function desenhos(){
+  const NS='http://www.w3.org/2000/svg';
+  function el(svg,tag,at,txt){const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);if(txt!==undefined)e.textContent=txt;svg.appendChild(e);return e;}
+  const traco='#1d222b',fino='#59606c',cota='#a3243f';
+  function cotaH(svg,x0,x1,y,txt,acima){el(svg,'line',{x1:x0,y1:y,x2:x1,y2:y,stroke:cota,'stroke-width':8});[x0,x1].forEach(x=>el(svg,'line',{x1:x,y1:y-40,x2:x,y2:y+40,stroke:cota,'stroke-width':6}));
+    el(svg,'text',{x:(x0+x1)/2,y:acima?y-34:y+120,'text-anchor':'middle','font-size':112,'font-family':'JetBrains Mono, monospace',fill:cota,'font-weight':600},txt);}
+  function cotaV(svg,x,y0,y1,txt,esq){el(svg,'line',{x1:x,y1:y0,x2:x,y2:y1,stroke:cota,'stroke-width':8});[y0,y1].forEach(y=>el(svg,'line',{x1:x-40,y1:y,x2:x+40,y2:y,stroke:cota,'stroke-width':6}));
+    const tx=esq?x-30:x+30;el(svg,'text',{x:tx,y:(y0+y1)/2+36,'text-anchor':esq?'end':'start','font-size':112,'font-family':'JetBrains Mono, monospace',fill:cota,'font-weight':600},txt);}
+  // ---------- frente ----------  (mm; origem: x=0 no centro, y=0 no piso)
+  const f=$('dFrente'); if(f){
+    const X=x=>2050+x*1, Y=y=>2780-y;
+    el(f,'line',{x1:300,y1:Y(0),x2:3800,y2:Y(0),stroke:traco,'stroke-width':8});
+    for(let i=0;i<35;i++)el(f,'line',{x1:330+i*100,y1:Y(0)+10,x2:290+i*100,y2:Y(0)+50,stroke:fino,'stroke-width':3});
+    // painel solar aparecendo atrás da platibanda
+    // vidros do fundo
+    [[-1430,-497],[-467,467],[497,1430]].forEach(([a,b])=>el(f,'rect',{x:X(a),y:Y(2200),width:b-a,height:1950,fill:'#dfe9ee',stroke:'#9fb2bf','stroke-width':4}));
+    // montantes e travessa
+    [-482,482].forEach(x=>el(f,'rect',{x:X(x-15),y:Y(2200),width:30,height:1950,fill:'#2a2e35'}));
+    el(f,'rect',{x:X(-1430),y:Y(250),width:2860,height:50,fill:'#2a2e35'});
+    // pés
+    [-1500,1430].forEach(x=>el(f,'rect',{x:X(x),y:Y(2150),width:70,height:2150,fill:traco}));
+    // PCD
+    el(f,'rect',{x:X(620),y:Y(12),width:800,height:12,fill:'#1f5fae'});
+    // banco
+    el(f,'rect',{x:X(-1430),y:Y(433),width:2050,height:32,fill:'#7a5536'});
+    el(f,'rect',{x:X(-1430),y:Y(783),width:2050,height:100,fill:'#7a5536'});
+    [-490,490].forEach(x=>el(f,'rect',{x:X(x-15),y:Y(401),width:30,height:401,fill:'#2a2e35'}));
+    // platibanda
+    el(f,'rect',{x:X(-1523),y:Y(2490),width:3046,height:340,fill:'#6a1a2e'});
+    el(f,'text',{x:X(0),y:Y(2290),'text-anchor':'middle','font-size':120,'font-family':'Barlow Condensed, Arial Narrow, sans-serif','font-weight':800,fill:'#fff'},'GOVERNO MUNICIPAL');
+    el(f,'line',{x1:X(-1000),y1:Y(2286),x2:X(1000),y2:Y(2286),stroke:'#f3c46b','stroke-width':10,'stroke-dasharray':'30 18'});
+    // cotas
+    cotaH(f,X(-1500),X(1500),Y(0)+170,'3,00 m');
+    cotaV(f,X(-1523)-140,Y(0),Y(2490),'2,50',true);
+    cotaV(f,X(-1000),Y(0),Y(2150),'2,20 livre',false);
+    cotaV(f,X(-1430)+120,Y(0),Y(433),'0,43',false);
+    cotaH(f,X(620),X(1420),Y(0)-90,'0,80',true);
+  }
+  // ---------- lado (visto da esquerda; rua à direita) ----------
+  const l=$('dLado'); if(l){
+    const Z=z=>820+z, Y=y=>2780-y;
+    el(l,'line',{x1:60,y1:Y(0),x2:2040,y2:Y(0),stroke:traco,'stroke-width':8});
+    for(let i=0;i<20;i++)el(l,'line',{x1:90+i*100,y1:Y(0)+10,x2:50+i*100,y2:Y(0)+50,stroke:fino,'stroke-width':3});
+    // vidro lateral
+    el(l,'rect',{x:Z(-430),y:Y(2150),width:860,height:1900,fill:'#dfe9ee',stroke:'#9fb2bf','stroke-width':4});
+    // banco (perfil)
+    el(l,'rect',{x:Z(-370),y:Y(433),width:400,height:32,fill:'#7a5536'});
+    el(l,'rect',{x:Z(-450),y:Y(783),width:32,height:100,fill:'#7a5536'});
+    el(l,'rect',{x:Z(-10),y:Y(401),width:40,height:401,fill:'#2a2e35'});
+    // pés
+    el(l,'rect',{x:Z(-500),y:Y(2203),width:70,height:2203,fill:traco});
+    el(l,'rect',{x:Z(430),y:Y(2297),width:70,height:2297,fill:traco});
+    // descida de água
+    el(l,'rect',{x:Z(-566),y:Y(2170),width:50,height:2110,fill:'#d9d6cf',stroke:fino,'stroke-width':3});
+    // painel solar (a parte de baixo fica escondida atrás do ACM)
+    el(l,'line',{x1:Z(-585),y1:Y(2470),x2:Z(185),y2:Y(2350),stroke:'#4a5a78','stroke-width':26});
+    // platibanda
+    el(l,'rect',{x:Z(-606),y:Y(2490),width:1606,height:340,fill:'#6a1a2e'});
+    // linha da cobertura (por trás do ACM)
+    el(l,'line',{x1:Z(-530),y1:Y(2247),x2:Z(977),y2:Y(2398),stroke:'#f3c46b','stroke-width':10,'stroke-dasharray':'40 22'});
+    el(l,'text',{x:Z(197),y:Y(2350),'text-anchor':'middle','font-size':62,'font-family':'JetBrains Mono, monospace',fill:'#fff','font-weight':600},'← cobertura cai 10%');
+    // cotas
+    cotaH(l,Z(-606),Z(1000),Y(0)+170,'1,60 m');
+    cotaH(l,Z(-500),Z(500),Y(0)-110,'1,00 m',true);
+    cotaH(l,Z(500),Z(1000),Y(2150)+120,'0,50',false);
+    el(l,'text',{x:Z(1060),y:Y(0)-30,'text-anchor':'start','font-size':60,'font-family':'Barlow, sans-serif',fill:fino},'rua →');
+    el(l,'text',{x:Z(-640),y:Y(0)-30,'text-anchor':'end','font-size':60,'font-family':'Barlow, sans-serif',fill:fino},'fundo');
+  }
+}
+})();
+
+/* vídeo e copiar número */
+(function(){
+  const v=document.getElementById('video');
+  if(v&&'IntersectionObserver' in window){new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){v.play().catch(()=>{});}else{v.pause();}}),{threshold:.4}).observe(v);}
+  const b=document.getElementById('copiar');
+  b.addEventListener('click',()=>{
+    const num='(54) 99257-4831';
+    const ok=()=>{b.textContent='Número copiado';setTimeout(()=>b.textContent='Copiar número',2200);};
+    function seleciona(){const r=document.createRange();r.selectNodeContents(document.getElementById('fone'));const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Número selecionado';}
+    try{navigator.clipboard.writeText(num).then(ok,seleciona);}catch(e){seleciona();}
+  });
+})();
+
+</script>
+
+</body>
+</html>
